@@ -109,12 +109,15 @@ for skill_dir in sorted((ROOT / "skills").iterdir()):
         if not (skill_dir / ref).is_file():
             err(f"{skill_md}: 参照先 '{ref}' が存在しません")
 
-# --- エージェント定義（同期対象外） ---
-for agent_md in sorted((ROOT / "plugins/impl/agents").glob("*.md")):
-    meta = load_frontmatter(agent_md)
-    for field in ("name", "description"):
-        if not meta.get(field):
-            err(f"{agent_md}: 必須フィールド '{field}' がありません")
+# --- 自己完結の担保 ---
+# スキルはチャネル間で挙動が分岐しないよう自己完結させる方針のため、
+# プラグイン固有のエージェント同梱を禁止する。
+for plugin_dir in sorted((ROOT / "plugins").iterdir()):
+    if plugin_dir.is_dir() and (plugin_dir / "agents").exists():
+        err(
+            f"{plugin_dir.relative_to(ROOT)}/agents: "
+            "スキルは自己完結させる方針のため、プラグイン固有のエージェントは同梱しません"
+        )
 
 # --- 結果 ---
 if errors:

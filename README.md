@@ -41,8 +41,10 @@ Claude Code では `.claude/skills/` に、Copilot / Cursor / OpenCode / Codex /
 実装タスクをフェーズ分割して段階的に進めるワークフロー。
 
 1. **effort選択** — ユーザープロンプトにeffort指定（low / medium / high）がなければ、選択肢を提示して選ばせる
-2. **計画立案** — `phase-planner` サブエージェントがコードベースを探索し、フェーズごとの計画JSON（`phase-01.json`, `phase-02.json`, ... と `plan-index.json`）を一時ディレクトリに書き出す。計画JSONはgitリポジトリには含めず、1ファイルを大きくしすぎない
-3. **実装** — フェーズごとに `phase-implementer` サブエージェントを起動し、計画JSONを読み込ませて実装・検証させる
+2. **計画立案** — 読み取り中心のサブエージェントがコードベースを探索し、フェーズごとの計画JSON（`phase-01.json`, `phase-02.json`, ... と `plan-index.json`）を一時ディレクトリに書き出す。計画JSONはgitリポジトリには含めず、1ファイルを大きくしすぎない
+3. **実装** — フェーズごとにサブエージェントを起動し、計画JSONのパスを渡して読み込ませ、実装・検証させる
+
+サブエージェント機構が無い環境では、同じ手順をそのまま自分で順に実行します（スキルは自己完結しており、専用エージェントの同梱を前提としません）。
 
 使い方の例:
 
@@ -66,17 +68,13 @@ plugins/impl/skills/impl/         # 生成物: Claude Codeプラグイン用
 
 apm.yml                           # APMパッケージマニフェスト
 .claude-plugin/marketplace.json   # Claude Code マーケットプレイス定義
-plugins/impl/
-├── .claude-plugin/plugin.json
-└── agents/                       # 同期対象外（プラグイン固有）
-    ├── phase-planner.md          #   計画立案エージェント（読み取り + 計画JSON書き出しのみ）
-    └── phase-implementer.md      #   実装エージェント（1フェーズ = 1エージェント）
+plugins/impl/.claude-plugin/plugin.json
 scripts/
 ├── sync_skills.py                # SSoT → 生成先の同期 / --check で乖離検出
 └── lint_skills.py                # マニフェスト・スキル規約の検証
 ```
 
-SKILL.mdは**自己完結**で、どちらのチャネル経由でも同一内容です。同梱エージェント（`phase-planner` / `phase-implementer`）は「あれば使う」任意の最適化として扱われ、無い環境ではサブエージェントの代替、それも無ければ自力実行にフォールバックします。
+SKILL.mdは**自己完結**で、どちらのチャネル経由でも完全に同一の内容です。専用サブエージェントは同梱せず、実行環境にあるサブエージェント機構（あれば）を使い、無ければ自力実行にフォールバックします。これによりチャネル間で挙動が分岐しません。
 
 ### スキルを編集するとき
 
