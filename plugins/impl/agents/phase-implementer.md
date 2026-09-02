@@ -1,6 +1,6 @@
 ---
 name: phase-implementer
-description: phase-plannerが書き出した計画JSONファイルを読み込み、1フェーズ分の実装を行う実装エージェント。phased-implementationスキルから起動される。担当フェーズのスコープ外の変更は行わない。
+description: phase-plannerが書き出した計画JSONファイルを読み込み、1フェーズ分の実装を行う実装エージェント。implスキルから起動される。担当フェーズのスコープ外の変更は行わない。
 color: green
 ---
 

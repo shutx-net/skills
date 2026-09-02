@@ -1,10 +1,10 @@
 ---
-name: phased-implementation
-description: 実装タスクをフェーズ分割し、計画立案サブエージェントがフェーズごとの計画JSONを一時ディレクトリに書き出し、実装サブエージェントがそのJSONをもとに段階的に実装するワークフロー。ユーザーが「フェーズ分割で実装して」「計画を立ててから実装して」「phased-implementationで」等と依頼したとき、または中〜大規模で複数ステップに渡る実装・改修タスクを構造的に進めたいときに使用する。
+name: impl
+description: 実装タスクをフェーズ分割し、計画立案サブエージェントがフェーズごとの計画JSONを一時ディレクトリに書き出し、実装サブエージェントがそのJSONをもとに段階的に実装するワークフロー。ユーザーが「フェーズ分割で実装して」「計画を立ててから実装して」「implで」等と依頼したとき、または中〜大規模で複数ステップに渡る実装・改修タスクを構造的に進めたいときに使用する。
 argument-hint: "[タスク内容] [effort: low|medium|high]"
 ---
 
-# Phased Implementation
+# impl — Phased Implementation
 
 実装タスクを「計画フェーズ」と「実装フェーズ」に分け、それぞれ専用のサブエージェントに委譲するワークフロー。計画はフェーズごとの小さなJSONファイルとして一時ディレクトリに書き出し、gitリポジトリには含めない。
 
@@ -29,7 +29,7 @@ argument-hint: "[タスク内容] [effort: low|medium|high]"
 計画JSONは**gitリポジトリの外**に置く。リポジトリ内に作成してはならない。
 
 - セッションのscratchpadディレクトリがシステムプロンプトに示されている場合はその下、なければ `/tmp` の下に作業ディレクトリを作る:
-  - 例: `<scratchpad>/phased-impl/<YYYYMMDD-HHMMSS>/` または `/tmp/phased-impl/<YYYYMMDD-HHMMSS>/`
+  - 例: `<scratchpad>/impl/<YYYYMMDD-HHMMSS>/` または `/tmp/impl/<YYYYMMDD-HHMMSS>/`
 - `mkdir -p` で作成し、絶対パスを控えておく。
 
 ### Step 2: 計画立案サブエージェントの起動

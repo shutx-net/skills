@@ -8,8 +8,8 @@
   },
   "plugins": [
     {
-      "name": "phased-implementation",
-      "source": "./plugins/phased-implementation",
+      "name": "impl",
+      "source": "./plugins/impl",
       "description": "フェーズ分割された探索・実装計画をJSONファイルとして書き出し、サブエージェントで段階的に実装するワークフロー",
       "category": "development",
       "keywords": ["implementation", "planning", "subagent", "workflow"]
