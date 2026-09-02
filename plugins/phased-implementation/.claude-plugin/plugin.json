@@ -1,0 +1,9 @@
+{
+  "name": "phased-implementation",
+  "version": "0.1.0",
+  "description": "フェーズ分割された探索・実装計画をJSONファイルとして書き出し、サブエージェントで段階的に実装するワークフロー",
+  "author": {
+    "name": "shutx"
+  },
+  "keywords": ["implementation", "planning", "subagent", "workflow"]
+}

@@ -1,0 +1,17 @@
+{
+  "name": "shutx-skills",
+  "owner": {
+    "name": "shutx"
+  },
+  "metadata": {
+    "description": "shutx's Claude Code skills and plugins",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "phased-implementation",
+      "source": "./plugins/phased-implementation",
+      "description": "フェーズ分割された探索・実装計画をJSONファイルとして書き出し、サブエージェントで段階的に実装するワークフロー"
+    }
+  ]
+}
