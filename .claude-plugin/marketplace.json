@@ -1,0 +1,18 @@
+{
+  "$schema": "https://code.claude.com/schemas/marketplace.json",
+  "name": "shutx-skills",
+  "version": "0.1.0",
+  "description": "shutx's Claude Code skills and plugins",
+  "owner": {
+    "name": "shutx"
+  },
+  "plugins": [
+    {
+      "name": "impl",
+      "source": "./plugins/impl",
+      "description": "フェーズ分割された探索・実装計画をJSONファイルとして書き出し、サブエージェントで段階的に実装するワークフロー",
+      "category": "development",
+      "keywords": ["implementation", "planning", "subagent", "workflow"]
+    }
+  ]
+}
