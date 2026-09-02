@@ -1,6 +1,7 @@
 ---
 name: phased-implementation
 description: 実装タスクをフェーズ分割し、計画立案サブエージェントがフェーズごとの計画JSONを一時ディレクトリに書き出し、実装サブエージェントがそのJSONをもとに段階的に実装するワークフロー。ユーザーが「フェーズ分割で実装して」「計画を立ててから実装して」「phased-implementationで」等と依頼したとき、または中〜大規模で複数ステップに渡る実装・改修タスクを構造的に進めたいときに使用する。
+argument-hint: "[タスク内容] [effort: low|medium|high]"
 ---
 
 # Phased Implementation
