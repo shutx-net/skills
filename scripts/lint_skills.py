@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
 """リポジトリ内のマニフェストとスキルの整合性チェック。
 
+スキル定義のSSoTは skills/ で、各配布チャネルへの同期は sync_skills.py が担う。
+このスクリプトはSSoTと、同期対象外のファイル（マニフェスト・エージェント定義）を検証する。
+
 - JSONマニフェスト（marketplace.json / plugin.json）がパースできること
 - apm.yml に必須フィールド（name / version）があること
-- APM版スキルが公式規約を満たすこと
+- SSoTのスキルが公式規約を満たすこと
   （name がディレクトリ名と一致、description が1024文字以内、本文500行以内）
-- プラグイン版スキル・エージェント定義の frontmatter がパースできること
+- SSoTの `LOAD references/...` の参照先が存在すること
+- エージェント定義の frontmatter に必須フィールドがあること
 - マーケットプレイスの source が指すプラグインディレクトリが存在すること
 """
 import json
@@ -75,8 +79,8 @@ else:
     except yaml.YAMLError as e:
         err(f"apm.yml: YAMLが不正です: {e}")
 
-# --- APM版スキル（公式規約） ---
-for skill_dir in sorted((ROOT / ".apm" / "skills").iterdir()):
+# --- SSoTのスキル（公式規約） ---
+for skill_dir in sorted((ROOT / "skills").iterdir()):
     if not skill_dir.is_dir():
         continue
     skill_md = skill_dir / "SKILL.md"
@@ -105,15 +109,7 @@ for skill_dir in sorted((ROOT / ".apm" / "skills").iterdir()):
         if not (skill_dir / ref).is_file():
             err(f"{skill_md}: 参照先 '{ref}' が存在しません")
 
-# --- プラグイン版スキルとエージェント ---
-plugin_skill = ROOT / "plugins/impl/skills/impl/SKILL.md"
-if not plugin_skill.is_file():
-    err("plugins/impl/skills/impl/SKILL.md がありません")
-else:
-    meta = load_frontmatter(plugin_skill)
-    if not meta.get("description"):
-        err(f"{plugin_skill}: description がありません")
-
+# --- エージェント定義（同期対象外） ---
 for agent_md in sorted((ROOT / "plugins/impl/agents").glob("*.md")):
     meta = load_frontmatter(agent_md)
     for field in ("name", "description"):
