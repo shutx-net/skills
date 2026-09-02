@@ -70,8 +70,8 @@ apm.yml                           # APMパッケージマニフェスト
 .claude-plugin/marketplace.json   # Claude Code マーケットプレイス定義
 plugins/impl/.claude-plugin/plugin.json
 scripts/
-├── sync_skills.py                # SSoT → 生成先の同期 / --check で乖離検出
-└── lint_skills.py                # マニフェスト・スキル規約の検証
+├── sync-skills.sh                # SSoT → 生成先の同期 / --check で乖離検出
+└── lint-skills.sh                # マニフェスト・スキル規約の検証
 ```
 
 SKILL.mdは**自己完結**で、どちらのチャネル経由でも完全に同一の内容です。専用サブエージェントは同梱せず、実行環境にあるサブエージェント機構（あれば）を使い、無ければ自力実行にフォールバックします。これによりチャネル間で挙動が分岐しません。
@@ -82,9 +82,16 @@ SKILL.mdは**自己完結**で、どちらのチャネル経由でも完全に�
 2. 同期する:
 
 ```bash
-python3 scripts/sync_skills.py
+./scripts/sync-skills.sh
 ```
 
 3. 生成物も含めてコミットする（配布時に取得されるのは生成先のファイルのため、リポジトリにコミットが必要です）
 
-CIは `python3 scripts/sync_skills.py --check` を実行し、生成先がSSoTと乖離していればビルドを落とします。
+CIは `./scripts/sync-skills.sh --check` を実行し、生成先がSSoTと乖離していればビルドを落とします。
+
+スクリプトはPOSIX shと標準的なコマンド（cp / diff / grep / sed / awk / wc）だけで動くため、追加のランタイムやパッケージのインストールは不要です。ローカル検証も同じコマンドで実行できます:
+
+```bash
+./scripts/lint-skills.sh          # マニフェスト・スキル規約の検証
+./scripts/sync-skills.sh --check  # 生成先の乖離チェック
+```
