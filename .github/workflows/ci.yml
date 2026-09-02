@@ -37,7 +37,10 @@ jobs:
           setup-only: "true"
 
       - name: Validate manifest and resolve package
-        run: apm install
+        run: apm install --target claude
+
+      - name: Verify skill deployment
+        run: test -f .claude/skills/impl/SKILL.md
 
   skill-lint:
     name: Lint skills
