@@ -52,20 +52,41 @@ Claude Code では `.claude/skills/` に、Copilot / Cursor / OpenCode / Codex /
 
 またはスキルの説明に合致する依頼（「フェーズ分割で実装して」「計画を立ててから実装して」等）で自動的に発動します。
 
-構成:
+## リポジトリ構成とスキル定義の同期
+
+スキル定義の**唯一の正（SSoT）は `skills/`** です。各配布チャネル向けのディレクトリは、そこから同期スクリプトで生成されます。
 
 ```
+skills/impl/                      # ★ SSoT — 編集するのはここだけ
+├── SKILL.md                      #   ワークフロー本体（自己完結）
+└── references/plan-schema.md     #   計画JSONスキーマ
+
+.apm/skills/impl/                 # 生成物: APMパッケージ用
+plugins/impl/skills/impl/         # 生成物: Claude Codeプラグイン用
+
 apm.yml                           # APMパッケージマニフェスト
-.apm/skills/impl/                 # APM版スキル（ハーネス非依存・自己完結）
-├── SKILL.md
-└── references/plan-schema.md     # 計画JSONスキーマ
 .claude-plugin/marketplace.json   # Claude Code マーケットプレイス定義
-plugins/impl/                     # Claude Code プラグイン版
+plugins/impl/
 ├── .claude-plugin/plugin.json
-├── skills/impl/SKILL.md          # ワークフロー本体
-└── agents/
-    ├── phase-planner.md          # 計画立案エージェント（読み取り + 計画JSON書き出しのみ）
-    └── phase-implementer.md      # 実装エージェント（1フェーズ = 1エージェント）
+└── agents/                       # 同期対象外（プラグイン固有）
+    ├── phase-planner.md          #   計画立案エージェント（読み取り + 計画JSON書き出しのみ）
+    └── phase-implementer.md      #   実装エージェント（1フェーズ = 1エージェント）
+scripts/
+├── sync_skills.py                # SSoT → 生成先の同期 / --check で乖離検出
+└── lint_skills.py                # マニフェスト・スキル規約の検証
 ```
 
-2つのSKILL.mdは同じワークフローです。プラグイン版は同梱のサブエージェント（`phase-planner` / `phase-implementer`）を使う前提で書かれており、APM版はサブエージェント機構の有無に応じて委譲/自力実行を切り替える自己完結版です。ワークフローを変更するときは両方を更新してください。
+SKILL.mdは**自己完結**で、どちらのチャネル経由でも同一内容です。同梱エージェント（`phase-planner` / `phase-implementer`）は「あれば使う」任意の最適化として扱われ、無い環境ではサブエージェントの代替、それも無ければ自力実行にフォールバックします。
+
+### スキルを編集するとき
+
+1. `skills/impl/` を編集する（生成先を直接編集しない）
+2. 同期する:
+
+```bash
+python3 scripts/sync_skills.py
+```
+
+3. 生成物も含めてコミットする（配布時に取得されるのは生成先のファイルのため、リポジトリにコミットが必要です）
+
+CIは `python3 scripts/sync_skills.py --check` を実行し、生成先がSSoTと乖離していればビルドを落とします。
