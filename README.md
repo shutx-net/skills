@@ -1,8 +1,13 @@
 # shutx skills
 
-Claude Code 用のスキル・プラグイン置き場。このリポジトリはプラグインマーケットプレイスとして機能します。
+Claude Code 用のスキル・プラグイン置き場。このリポジトリは以下の2通りの方法で配布されます:
+
+1. **Claude Code プラグインマーケットプレイス** — サブエージェント同梱のフル機能版
+2. **[APM (Agent Package Manager)](https://microsoft.github.io/apm/) パッケージ** — Copilot / Cursor / Codex 等でも使えるハーネス非依存版
 
 ## インストール
+
+### Claude Code（プラグイン）
 
 Claude Code 上で:
 
@@ -10,6 +15,24 @@ Claude Code 上で:
 /plugin marketplace add shutx-net/skills
 /plugin install impl@shutx-skills
 ```
+
+### APM
+
+プロジェクトの `apm.yml` に依存として追加:
+
+```yaml
+dependencies:
+  apm:
+    - shutx-net/skills
+```
+
+その後:
+
+```
+apm install
+```
+
+Claude Code では `.claude/skills/` に、Copilot / Cursor / OpenCode / Codex / Gemini では `.agents/skills/` にスキルが配備されます。
 
 ## 収録プラグイン
 
@@ -32,10 +55,17 @@ Claude Code 上で:
 構成:
 
 ```
-plugins/impl/
+apm.yml                           # APMパッケージマニフェスト
+.apm/skills/impl/                 # APM版スキル（ハーネス非依存・自己完結）
+├── SKILL.md
+└── references/plan-schema.md     # 計画JSONスキーマ
+.claude-plugin/marketplace.json   # Claude Code マーケットプレイス定義
+plugins/impl/                     # Claude Code プラグイン版
 ├── .claude-plugin/plugin.json
 ├── skills/impl/SKILL.md          # ワークフロー本体
 └── agents/
     ├── phase-planner.md          # 計画立案エージェント（読み取り + 計画JSON書き出しのみ）
     └── phase-implementer.md      # 実装エージェント（1フェーズ = 1エージェント）
 ```
+
+2つのSKILL.mdは同じワークフローです。プラグイン版は同梱のサブエージェント（`phase-planner` / `phase-implementer`）を使う前提で書かれており、APM版はサブエージェント機構の有無に応じて委譲/自力実行を切り替える自己完結版です。ワークフローを変更するときは両方を更新してください。
