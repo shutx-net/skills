@@ -10,11 +10,10 @@ argument-hint: "[タスク内容] [effort: low|medium|high]"
 
 計画・実装の実行者は環境に応じて選ぶ:
 
-1. **同梱エージェントがある場合**（Claude Codeプラグインとしてインストールされている場合）: 計画には `phase-planner`、実装には `phase-implementer` エージェントを使う
-2. **同梱エージェントは無いがサブエージェント機構がある場合**（Task/Agentツール等）: 計画には読み取り中心のエージェント（Plan / Explore / general-purpose 等）、実装には general-purpose 等を使う
-3. **サブエージェント機構が無い場合**: 同じ手順を自分自身で順に実行する
+- **サブエージェント機構がある場合**（Task/Agentツール等）: 計画には読み取り中心のエージェント（Plan / Explore / general-purpose 等）、実装には general-purpose 等を1フェーズにつき1体使う
+- **無い場合**: 同じ手順を自分自身で順に実行する
 
-計画JSONのスキーマは `references/plan-schema.md` にある（`LOAD references/plan-schema.md`）。サブエージェントに委譲する場合は、`phase-planner` / `phase-implementer` 以外のエージェントはこのスキーマを知らないため、**スキーマの内容を起動プロンプトに含めること**（同梱エージェントに対しても含めてよい。プロンプトのスキーマが常に優先される）。
+計画JSONのスキーマは `references/plan-schema.md` にある（`LOAD references/plan-schema.md`）。サブエージェントはこのスキーマを知らないため、**委譲する場合はスキーマの内容を起動プロンプトに含めること**。
 
 ## ワークフロー
 
