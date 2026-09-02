@@ -1,0 +1,14 @@
+name: shutx-skills
+version: "0.1.0"
+description: フェーズ分割された探索・実装計画をJSONファイルとして書き出し、サブエージェントで段階的に実装するワークフロースキル集
+author:
+  name: shutx
+  url: https://github.com/shutx-net
+license: MIT
+type: skill
+repository: https://github.com/shutx-net/skills
+keywords:
+  - implementation
+  - planning
+  - subagent
+  - workflow
