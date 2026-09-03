@@ -9,6 +9,7 @@
 #   - SSoTのスキルが公式規約を満たすこと
 #     （name がディレクトリ名と一致、description が1024文字以内、本文500行以内）
 #   - SSoTの `LOAD references/...` の参照先が存在すること
+#   - 各スキルが配布チャネルに登録されていること（plugin.json / marketplace.json）
 #   - プラグインにエージェントを同梱していないこと（自己完結の担保）
 #
 # 使い方: ./scripts/lint-skills.sh
@@ -52,7 +53,7 @@ fm_value() {
 }
 
 # --- マニフェスト ---
-for f in .claude-plugin/marketplace.json plugins/impl/.claude-plugin/plugin.json apm.yml; do
+for f in .claude-plugin/marketplace.json apm.yml; do
 	if [ ! -f "$f" ]; then
 		err "$f: ファイルがありません"
 	fi
@@ -132,6 +133,25 @@ for skill_dir in skills/*/; do
 				err "$skill_md: 参照先 \"$ref\" が存在しません"
 			fi
 		done
+done
+
+# --- 配布登録の検査 ---
+# skills/ にスキルを足しただけでは配布されない。各チャネルへの登録漏れを検出する。
+for skill_dir in skills/*/; do
+	[ -d "$skill_dir" ] || continue
+	skill_name=${skill_dir#skills/}
+	skill_name=${skill_name%/}
+
+	manifest="plugins/$skill_name/.claude-plugin/plugin.json"
+	if [ ! -f "$manifest" ]; then
+		err "$manifest がありません（スキル '$skill_name' のプラグインマニフェスト未作成）"
+	fi
+
+	if [ -f .claude-plugin/marketplace.json ]; then
+		if ! grep -q "\"\./plugins/$skill_name\"" .claude-plugin/marketplace.json; then
+			err "marketplace.json: スキル '$skill_name' のプラグインが登録されていません（source \"./plugins/$skill_name\"）"
+		fi
+	fi
 done
 
 # --- 自己完結の担保 ---

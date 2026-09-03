@@ -2,9 +2,13 @@
 # スキル定義をSSoT（skills/）から各配布チャネルへ同期する。
 #
 # SSoT: skills/<name>/            — スキル定義の唯一の正
-# 生成先:
+# 生成先（スキル名から規約で導出する）:
 #   .apm/skills/<name>/           — APMパッケージ用
 #   plugins/<name>/skills/<name>/ — Claude Codeプラグイン用
+#
+# skills/ 配下のディレクトリは自動で対象になる。スキルを増やすときに
+# このスクリプトを編集する必要はない（配布に必要なマニフェストの登録は
+# lint-skills.sh が検査する）。
 #
 # 使い方:
 #   ./scripts/sync-skills.sh           # 生成先を同期（書き込み）
@@ -15,21 +19,11 @@
 set -eu
 
 ROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
-
-# 同期対象のスキル名（スペース区切り）
-SKILL_NAMES="impl"
+cd "$ROOT"
 
 # スキル名 -> 生成先ディレクトリ（ROOTからの相対パス、1行1件）
 targets_for() {
-	case "$1" in
-	impl)
-		printf '%s\n' ".apm/skills/impl" "plugins/impl/skills/impl"
-		;;
-	*)
-		printf 'エラー: スキル "%s" の同期先が未定義です\n' "$1" >&2
-		exit 1
-		;;
-	esac
+	printf '%s\n' ".apm/skills/$1" "plugins/$1/skills/$1"
 }
 
 usage() {
@@ -68,34 +62,63 @@ sync_one() {
 check_one() {
 	_src=$1
 	_dst=$2
-	_rel=$3
 	if [ ! -d "$_dst" ]; then
-		printf '  - %s: 生成先ディレクトリがありません\n' "$_rel" >&2
+		printf '  - %s: 生成先ディレクトリがありません\n' "$_dst" >&2
 		return 1
 	fi
 	if _out=$(diff -r -x GENERATED.md "$_src" "$_dst" 2>&1); then
 		return 0
 	fi
-	printf '  - %s: SSoTと一致しません\n' "$_rel" >&2
+	printf '  - %s: SSoTと一致しません\n' "$_dst" >&2
 	printf '%s\n' "$_out" | sed 's|^|      |' >&2
 	return 1
 }
 
+# SSoT配下のスキルを列挙する
+skill_names() {
+	for _dir in skills/*/; do
+		[ -d "$_dir" ] || continue
+		_name=${_dir#skills/}
+		printf '%s\n' "${_name%/}"
+	done
+}
+
+names=$(skill_names)
+if [ -z "$names" ]; then
+	printf 'エラー: skills/ にスキルがありません\n' >&2
+	exit 1
+fi
+
 drift=0
-for name in $SKILL_NAMES; do
-	src="$ROOT/skills/$name"
-	if [ ! -d "$src" ]; then
-		printf 'エラー: SSoT "skills/%s" がありません\n' "$name" >&2
-		exit 1
-	fi
+for name in $names; do
+	src="skills/$name"
 	for rel in $(targets_for "$name"); do
 		if [ "$CHECK" -eq 1 ]; then
-			check_one "$src" "$ROOT/$rel" "$rel" || drift=1
+			check_one "$src" "$rel" || drift=1
 		else
-			sync_one "$src" "$ROOT/$rel" "$name"
-			printf '同期: skills/%s -> %s\n' "$name" "$rel"
+			sync_one "$src" "$rel" "$name"
+			printf '同期: %s -> %s\n' "$src" "$rel"
 		fi
 	done
+done
+
+# 対応するSSoTが無い生成先（スキルを削除・改名したあとの取り残し）を検出する
+stale_targets() {
+	for _dir in .apm/skills/*/ plugins/*/skills/*/; do
+		[ -d "$_dir" ] || continue
+		_name=$(basename "$_dir")
+		[ -d "skills/$_name" ] || printf '%s\n' "${_dir%/}"
+	done
+}
+
+for stale in $(stale_targets); do
+	if [ "$CHECK" -eq 1 ]; then
+		printf '  - %s: 対応する skills/ のスキルがありません（削除・改名の取り残し）\n' "$stale" >&2
+		drift=1
+	else
+		rm -rf "$stale"
+		printf '削除: %s（対応する skills/ のスキルなし）\n' "$stale"
+	fi
 done
 
 if [ "$CHECK" -eq 1 ]; then
