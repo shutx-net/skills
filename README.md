@@ -2,8 +2,8 @@
 
 Claude Code 用のスキル・プラグイン置き場。このリポジトリは以下の2通りの方法で配布されます:
 
-1. **Claude Code プラグインマーケットプレイス** — サブエージェント同梱のフル機能版
-2. **[APM (Agent Package Manager)](https://microsoft.github.io/apm/) パッケージ** — Copilot / Cursor / Codex 等でも使えるハーネス非依存版
+1. **Claude Code プラグインマーケットプレイス** — `/plugin` でインストールする形式
+2. **[APM (Agent Package Manager)](https://microsoft.github.io/apm/) パッケージ** — Copilot / Cursor / Codex 等でも使える形式
 
 ## インストール
 
@@ -95,3 +95,16 @@ CIは `./scripts/sync-skills.sh --check` を実行し、生成先がSSoTと乖�
 ./scripts/lint-skills.sh          # マニフェスト・スキル規約の検証
 ./scripts/sync-skills.sh --check  # 生成先の乖離チェック
 ```
+
+### 新しいスキルを追加する
+
+`skills/<name>/SKILL.md` を作れば、同期スクリプトが自動で検出して各生成先に配ります（スクリプトの編集は不要です）。ただし配布するには、そのスキルのプラグインをマニフェストに登録する必要があります:
+
+1. `skills/<name>/SKILL.md` を作成（`name` はディレクトリ名と一致させる）
+2. `plugins/<name>/.claude-plugin/plugin.json` を作成（`name` / `version` / `description` / `author`。`author` は `--strict` 検証で必須）
+3. `.claude-plugin/marketplace.json` の `plugins` に `{"name": "<name>", "source": "./plugins/<name>"}` を追加
+4. `./scripts/sync-skills.sh` を実行してコミット
+
+2と3を忘れた場合は `lint-skills.sh` が具体的に何が足りないかを指摘して落ちるので、「配布したつもりで何も配られていない」状態にはなりません。
+
+スキルを削除・改名したときは、`sync-skills.sh` が対応するSSoTを失った生成先を検出して削除します（`--check` では取り残しとして報告）。プラグインのマニフェストとマーケットプレイスの登録は手動で消してください。
