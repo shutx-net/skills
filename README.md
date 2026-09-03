@@ -5,6 +5,12 @@ Claude Code 用のスキル・プラグイン置き場。このリポジトリ�
 1. **Claude Code プラグインマーケットプレイス** — `/plugin` でインストールする形式
 2. **[APM (Agent Package Manager)](https://microsoft.github.io/apm/) パッケージ** — Copilot / Cursor / Codex 等でも使える形式
 
+## 収録スキル
+
+| スキル | 概要 |
+| --- | --- |
+| [`impl`](skills/impl/SKILL.md) | 実装タスクをフェーズ分割し、フェーズごとの計画JSONを書き出してから段階的に実装する |
+
 ## インストール
 
 ### Claude Code（プラグイン）
@@ -13,7 +19,7 @@ Claude Code 上で:
 
 ```
 /plugin marketplace add shutx-net/skills
-/plugin install impl@shutx-skills
+/plugin install <スキル名>@shutx-skills
 ```
 
 ### APM
@@ -34,41 +40,21 @@ apm install
 
 Claude Code では `.claude/skills/` に、Copilot / Cursor / OpenCode / Codex / Gemini では `.agents/skills/` にスキルが配備されます。
 
-## 収録プラグイン
-
-### impl
-
-実装タスクをフェーズ分割して段階的に進めるワークフロー。
-
-1. **effort選択** — ユーザープロンプトにeffort指定（low / medium / high）がなければ、選択肢を提示して選ばせる
-2. **計画立案** — 読み取り中心のサブエージェントがコードベースを探索し、フェーズごとの計画JSON（`phase-01.json`, `phase-02.json`, ... と `plan-index.json`）を一時ディレクトリに書き出す。計画JSONはgitリポジトリには含めず、1ファイルを大きくしすぎない
-3. **実装** — フェーズごとにサブエージェントを起動し、計画JSONのパスを渡して読み込ませ、実装・検証させる
-
-サブエージェント機構が無い環境では、同じ手順をそのまま自分で順に実行します（スキルは自己完結しており、専用エージェントの同梱を前提としません）。
-
-使い方の例:
-
-```
-/impl ユーザー認証にパスキー対応を追加して
-```
-
-またはスキルの説明に合致する依頼（「フェーズ分割で実装して」「計画を立ててから実装して」等）で自動的に発動します。
-
 ## リポジトリ構成とスキル定義の同期
 
 スキル定義の**唯一の正（SSoT）は `skills/`** です。各配布チャネル向けのディレクトリは、そこから同期スクリプトで生成されます。
 
 ```
-skills/impl/                      # ★ SSoT — 編集するのはここだけ
-├── SKILL.md                      #   ワークフロー本体（自己完結）
-└── references/plan-schema.md     #   計画JSONスキーマ
+skills/<name>/                    # ★ SSoT — 編集するのはここだけ
+├── SKILL.md                      #   スキル本体（自己完結）
+└── references/                   #   本文からLOADする補助ドキュメント
 
-.apm/skills/impl/                 # 生成物: APMパッケージ用
-plugins/impl/skills/impl/         # 生成物: Claude Codeプラグイン用
+.apm/skills/<name>/               # 生成物: APMパッケージ用
+plugins/<name>/skills/<name>/     # 生成物: Claude Codeプラグイン用
 
 apm.yml                           # APMパッケージマニフェスト
 .claude-plugin/marketplace.json   # Claude Code マーケットプレイス定義
-plugins/impl/.claude-plugin/plugin.json
+plugins/<name>/.claude-plugin/plugin.json
 scripts/
 ├── sync-skills.sh                # SSoT → 生成先の同期 / --check で乖離検出
 └── lint-skills.sh                # マニフェスト・スキル規約の検証
@@ -78,7 +64,7 @@ SKILL.mdは**自己完結**で、どちらのチャネル経由でも完全に�
 
 ### スキルを編集するとき
 
-1. `skills/impl/` を編集する（生成先を直接編集しない）
+1. `skills/<name>/` を編集する（生成先を直接編集しない）
 2. 同期する:
 
 ```bash
@@ -104,6 +90,7 @@ CIは `./scripts/sync-skills.sh --check` を実行し、生成先がSSoTと乖�
 2. `plugins/<name>/.claude-plugin/plugin.json` を作成（`name` / `version` / `description` / `author`。`author` は `--strict` 検証で必須）
 3. `.claude-plugin/marketplace.json` の `plugins` に `{"name": "<name>", "source": "./plugins/<name>"}` を追加
 4. `./scripts/sync-skills.sh` を実行してコミット
+5. このREADMEの「収録スキル」の表に1行追加する
 
 2と3を忘れた場合は `lint-skills.sh` が具体的に何が足りないかを指摘して落ちるので、「配布したつもりで何も配られていない」状態にはなりません。
 
