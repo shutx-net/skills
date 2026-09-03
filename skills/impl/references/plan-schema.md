@@ -7,7 +7,7 @@ implスキルの計画立案工程が書き出すJSONファイルの形式。
 ```json
 {
   "task": "タスクの1行要約",
-  "effort": "low | medium | high",
+  "effort": "決定したeffortレベル",
   "createdAt": "ISO8601",
   "phases": [
     { "id": 1, "file": "phase-01.json", "title": "フェーズ名", "dependsOn": [] },
