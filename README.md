@@ -10,6 +10,7 @@ Claude Code 用のスキル・プラグイン置き場。このリポジトリ�
 | スキル | 概要 |
 | --- | --- |
 | [`impl`](skills/impl/SKILL.md) | 実装タスクをフェーズ分割し、フェーズごとの計画JSONを書き出してから段階的に実装する |
+| [`commit-message`](skills/commit-message/SKILL.md) | git commitのメッセージを Conventional Commits 形式（`feat:` / `fix:` 等のプレフィックス）で書く |
 
 ## インストール
 
