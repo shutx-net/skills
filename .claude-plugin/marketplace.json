@@ -13,6 +13,13 @@
       "description": "フェーズ分割された探索・実装計画をJSONファイルとして書き出し、サブエージェントで段階的に実装するワークフロー",
       "category": "development",
       "keywords": ["implementation", "planning", "subagent", "workflow"]
+    },
+    {
+      "name": "commit-message",
+      "source": "./plugins/commit-message",
+      "description": "Conventional Commits に準拠したコミットメッセージの規約",
+      "category": "development",
+      "keywords": ["git", "commit", "commit-message", "conventional-commits"]
     }
   ]
 }

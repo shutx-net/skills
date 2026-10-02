@@ -22,8 +22,15 @@ jobs:
       - name: Validate marketplace manifest
         run: claude plugin validate . --strict
 
-      - name: Validate impl plugin
-        run: claude plugin validate plugins/impl --strict
+      # マーケットプレイスの検証は各プラグインの plugin.json までしか見ないため、
+      # 同梱スキル（SKILL.md の frontmatter 等）はプラグイン単位で検証する
+      - name: Validate each plugin
+        run: |
+          status=0
+          for dir in plugins/*/; do
+            claude plugin validate "$dir" --strict || status=1
+          done
+          exit "$status"
 
   apm-package:
     name: Validate APM package
@@ -40,7 +47,16 @@ jobs:
         run: apm install --target claude
 
       - name: Verify skill deployment
-        run: test -f .claude/skills/impl/SKILL.md
+        run: |
+          status=0
+          for dir in skills/*/; do
+            name=$(basename "$dir")
+            if [ ! -f ".claude/skills/$name/SKILL.md" ]; then
+              echo "::error::スキル '$name' が .claude/skills/ に配備されていません"
+              status=1
+            fi
+          done
+          exit "$status"
 
   skill-lint:
     name: Lint skills
