@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>エントリーシート</title>
+<title>{{ファイル名: エントリーシート_山田花子_20260510}}</title>
 <style>
   @page {
     size: A4 portrait;
@@ -57,13 +57,30 @@
     padding-left: 3mm;
     border-left: 3px solid #333;
   }
+  .basic-wrap {
+    display: flex;
+    align-items: flex-start;
+    gap: 6mm;
+    margin-bottom: 8mm;
+  }
   .basic-grid {
     display: table;
-    width: 100%;
+    flex: 1;
     border-top: 1px solid #999;
     border-bottom: 1px solid #999;
-    margin-bottom: 8mm;
     font-size: 10pt;
+  }
+  .photo-box {
+    flex: none;
+    width: 30mm;
+    height: 40mm;
+    border: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 8pt;
+    color: #aaa;
   }
   .basic-grid .row { display: table-row; }
   .basic-grid .label, .basic-grid .value {
@@ -110,27 +127,30 @@
 
   <div class="target-company">{{応募企業名}} 御中</div>
 
-  <div class="basic-grid">
-    <div class="row">
-      <div class="label">氏名</div>
-      <div class="value">{{ふりがな}}<br>{{氏名}}</div>
+  <div class="basic-wrap">
+    <div class="basic-grid">
+      <div class="row">
+        <div class="label">氏名</div>
+        <div class="value">{{ふりがな}}<br>{{氏名}}</div>
+      </div>
+      <div class="row">
+        <div class="label">生年月日</div>
+        <div class="value">{{生年月日}}</div>
+      </div>
+      <div class="row">
+        <div class="label">大学</div>
+        <div class="value">{{大学・学部・学科}}（{{卒業/修了予定年月}}）</div>
+      </div>
+      <div class="row">
+        <div class="label">住所</div>
+        <div class="value">〒{{郵便番号}} {{現住所}}</div>
+      </div>
+      <div class="row">
+        <div class="label">連絡先</div>
+        <div class="value">{{電話番号}} ／ {{メールアドレス}}</div>
+      </div>
     </div>
-    <div class="row">
-      <div class="label">生年月日</div>
-      <div class="value">{{生年月日}}</div>
-    </div>
-    <div class="row">
-      <div class="label">大学</div>
-      <div class="value">{{大学・学部・学科}}（{{卒業/修了予定年月}}）</div>
-    </div>
-    <div class="row">
-      <div class="label">住所</div>
-      <div class="value">〒{{郵便番号}} {{現住所}}</div>
-    </div>
-    <div class="row">
-      <div class="label">連絡先</div>
-      <div class="value">{{電話番号}} ／ {{メールアドレス}}</div>
-    </div>
+    <div class="photo-box">Photo<br>30 × 40 mm</div>
   </div>
 
   <div class="question-block">

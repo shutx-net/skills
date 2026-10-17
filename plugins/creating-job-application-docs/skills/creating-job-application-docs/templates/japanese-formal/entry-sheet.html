@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>エントリーシート</title>
+<title>{{ファイル名: エントリーシート_山田花子_20260510}}</title>
 <style>
   @page {
     size: A4 portrait;
@@ -73,6 +73,23 @@
     text-align: center;
     font-weight: normal;
   }
+  .basic-table .photo-cell {
+    width: 32mm;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 8pt;
+    color: #888;
+  }
+  .photo-cell .photo-box {
+    width: 30mm;
+    height: 40mm;
+    border: 1px dashed #888;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
   .question-block {
     margin-bottom: 6mm;
     break-inside: avoid;
@@ -110,22 +127,26 @@
 
   <table class="basic-table">
     <tr>
-      <th>ふりがな</th><td>{{ふりがな}}</td>
-      <th>生年月日</th><td>{{生年月日}}</td>
+      <th>ふりがな</th><td colspan="3">{{ふりがな}}</td>
+      <td rowspan="4" class="photo-cell">
+        <div class="photo-box">写真<br>30×40mm</div>
+      </td>
     </tr>
     <tr>
-      <th>氏名</th><td>{{氏名}}</td>
-      <th>性別</th><td>{{性別}}</td>
+      <th>氏名</th><td colspan="3">{{氏名}}</td>
+    </tr>
+    <tr>
+      <th>生年月日</th><td colspan="3">{{生年月日}}</td>
     </tr>
     <tr>
       <th>大学</th><td colspan="3">{{大学・学部・学科}}（{{卒業/修了予定年月}}）</td>
     </tr>
     <tr>
-      <th>住所</th><td colspan="3">〒{{郵便番号}} {{現住所}}</td>
+      <th>住所</th><td colspan="4">〒{{郵便番号}} {{現住所}}</td>
     </tr>
     <tr>
       <th>連絡先</th><td>{{電話番号}}</td>
-      <th>E-mail</th><td>{{メールアドレス}}</td>
+      <th>E-mail</th><td colspan="2">{{メールアドレス}}</td>
     </tr>
   </table>
 
