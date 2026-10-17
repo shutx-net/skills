@@ -10,7 +10,7 @@ Claude Code 用のスキル・プラグイン置き場。このリポジトリ�
 | スキル | 概要 |
 | --- | --- |
 | [`implementing-in-phases`](skills/implementing-in-phases/SKILL.md) | 実装タスクをフェーズ分割し、フェーズごとの計画JSONを書き出してから段階的に実装する |
-| [`commit-message`](skills/commit-message/SKILL.md) | git commitのメッセージを Conventional Commits 形式（`feat:` / `fix:` 等のプレフィックス）で書く |
+| [`writing-commit-messages`](skills/writing-commit-messages/SKILL.md) | git commitのメッセージを Conventional Commits 形式（`feat:` / `fix:` 等のプレフィックス）で書く |
 | [`creating-job-application-docs`](skills/creating-job-application-docs/SKILL.md) | 履歴書・職務経歴書・エントリーシートを、印刷・PDF化を前提とした HTML/CSS で作成する |
 
 ## インストール
@@ -49,6 +49,7 @@ Claude Code では `.claude/skills/` に、Copilot / Cursor / OpenCode / Codex /
 | 旧名 | 新しい名前 |
 | --- | --- |
 | `impl` | `implementing-in-phases` |
+| `commit-message` | `writing-commit-messages` |
 
 - **Claude Code（プラグイン）**: マーケットプレイスを更新すると、旧名のプラグインは読み込めなくなります（`Plugin impl not found in marketplace shutx-skills`）。旧名のプラグインを削除し、新しい名前で入れ直してください:
 
@@ -123,7 +124,7 @@ agentskills validate skills/<name>   # コマンド名は agentskills
 
 `skills/<name>/SKILL.md` を作れば、同期スクリプトが自動で検出して各生成先に配ります（スクリプトの編集は不要です）。ただし配布するには、そのスキルのプラグインをマニフェストに登録する必要があります:
 
-1. `skills/<name>/SKILL.md` を作成（`name` はディレクトリ名と一致させる）
+1. `skills/<name>/SKILL.md` を作成（`name` はディレクトリ名と一致させる。名前は、ほかのスキルと同じ動名詞形（`writing-commit-messages` のような形）にする）
 2. `plugins/<name>/.claude-plugin/plugin.json` を作成（`name` / `version` / `description` / `author`。`author` は `--strict` 検証で必須）
 3. `.claude-plugin/marketplace.json` の `plugins` に `{"name": "<name>", "source": "./plugins/<name>"}` を追加
 4. `./scripts/sync-skills.sh` を実行してコミット

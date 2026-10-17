@@ -1,5 +1,5 @@
 {
-  "name": "commit-message",
+  "name": "writing-commit-messages",
   "version": "0.1.0",
   "description": "Conventional Commits に準拠したコミットメッセージの規約",
   "author": {
