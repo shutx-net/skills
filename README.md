@@ -9,7 +9,7 @@ Claude Code 用のスキル・プラグイン置き場。このリポジトリ�
 
 | スキル | 概要 |
 | --- | --- |
-| [`impl`](skills/impl/SKILL.md) | 実装タスクをフェーズ分割し、フェーズごとの計画JSONを書き出してから段階的に実装する |
+| [`implementing-in-phases`](skills/implementing-in-phases/SKILL.md) | 実装タスクをフェーズ分割し、フェーズごとの計画JSONを書き出してから段階的に実装する |
 | [`commit-message`](skills/commit-message/SKILL.md) | git commitのメッセージを Conventional Commits 形式（`feat:` / `fix:` 等のプレフィックス）で書く |
 | [`creating-job-application-docs`](skills/creating-job-application-docs/SKILL.md) | 履歴書・職務経歴書・エントリーシートを、印刷・PDF化を前提とした HTML/CSS で作成する |
 
@@ -41,6 +41,24 @@ apm install
 ```
 
 Claude Code では `.claude/skills/` に、Copilot / Cursor / OpenCode / Codex / Gemini では `.agents/skills/` にスキルが配備されます。
+
+### 旧名から移行する
+
+次のスキルは名前を変えました。
+
+| 旧名 | 新しい名前 |
+| --- | --- |
+| `impl` | `implementing-in-phases` |
+
+- **Claude Code（プラグイン）**: マーケットプレイスを更新すると、旧名のプラグインは読み込めなくなります（`Plugin impl not found in marketplace shutx-skills`）。旧名のプラグインを削除し、新しい名前で入れ直してください:
+
+  ```
+  /plugin marketplace update shutx-skills
+  /plugin uninstall <旧名>@shutx-skills
+  /plugin install <新しい名前>@shutx-skills
+  ```
+
+- **APM**: `apm update` で依存を更新すると、新しい名前のスキルが配備され、旧名のスキルは削除されます。
 
 ## リポジトリ構成とスキル定義の同期
 

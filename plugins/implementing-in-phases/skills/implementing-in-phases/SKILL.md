@@ -1,9 +1,9 @@
 ---
-name: impl
+name: implementing-in-phases
 description: 実装タスクをフェーズ分割し、フェーズごとの計画JSONを一時ディレクトリに書き出してから段階的に実装する。「フェーズ分割で実装して」「計画を立ててから実装して」「implで」等の依頼や、中〜大規模で複数ステップに渡る実装・改修タスクを構造的に進めたいときに使用する。
 ---
 
-# impl — Phased Implementation
+# implementing-in-phases — Phased Implementation
 
 実装タスクを「計画」と「実装」に分け、計画をフェーズごとの小さなJSONファイルとして一時ディレクトリに書き出してから、フェーズ単位で実装するワークフロー。計画JSONはgitリポジトリには含めない。
 
@@ -29,7 +29,7 @@ description: 実装タスクをフェーズ分割し、フェーズごとの計�
 
 計画JSONは**gitリポジトリの外**に置く。リポジトリ内に作成してはならない。
 
-- 環境が用意する作業用一時ディレクトリ（scratchpad等）があればその下、なければ `/tmp` の下に作る。例: `/tmp/impl/<YYYYMMDD-HHMMSS>/`
+- 環境が用意する作業用一時ディレクトリ（scratchpad等）があればその下、なければ `/tmp` の下に作る。例: `/tmp/implementing-in-phases/<YYYYMMDD-HHMMSS>/`
 - `mkdir -p` で作成し、絶対パスを控えておく。
 
 ### Step 2: 計画立案

@@ -1,6 +1,6 @@
 # 計画JSONスキーマ
 
-implスキルの計画立案工程が書き出すJSONファイルの形式。
+implementing-in-phases スキルの計画立案工程が書き出すJSONファイルの形式。
 
 ## plan-index.json（全体索引）
 
