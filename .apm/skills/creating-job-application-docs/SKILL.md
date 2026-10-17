@@ -5,7 +5,7 @@ description: 就職・転職活動の応募書類（履歴書・職務経歴書�
 
 # creating-job-application-docs — Job Application Documents
 
-履歴書・職務経歴書・エントリーシートを HTML/CSS で生成し、`output/` ディレクトリに保存する。
+履歴書・職務経歴書・エントリーシートを HTML/CSS で生成し、`job-application-docs/` ディレクトリに保存する。
 
 ## 対応書類
 
@@ -45,18 +45,20 @@ description: 就職・転職活動の応募書類（履歴書・職務経歴書�
 
 ## 出力先
 
-プロジェクトルート直下の `output/` ディレクトリに保存する。
+プロジェクトルート直下の `job-application-docs/` ディレクトリに保存する。書類には氏名・住所・生年月日などの個人情報が入るため、git に入らないようにする。
 
 ```
-output/
+job-application-docs/
+├── .gitignore                        # 「*」の1行だけ。ディレクトリごと git の管理外にする
 ├── rirekisho_YYYYMMDD.html
 ├── shokumu-keirekisho_YYYYMMDD.html
 └── entry-sheet_YYYYMMDD.html
 ```
 
-- `output/` が存在しなければ作成する
+- `job-application-docs/` が存在しなければ作成する。中に `.gitignore` がなければ、`*` の1行だけを書いて作る
 - ファイル名は `<略称>_<YYYYMMDD>.html` 形式にする
 - 同名ファイルがあれば `_2`, `_3` を付ける
+- 生成した書類は、ユーザーに明示的に頼まれない限り git に追加・コミットしない
 
 ## ワークフロー
 
@@ -65,8 +67,8 @@ output/
 3. 残りの **必須ヒアリング項目** をすべて確認する
 4. `templates/<スタイル>/<略称>.html` をテンプレートとして読み込み、pdf-safe-css.md を読む
 5. 「テンプレートの使い方」に従い、ユーザーの入力でテンプレートを埋めて HTML を生成する
-6. `output/` ディレクトリに書き出す
-7. ファイルパスを伝え、ブラウザで開いて確認でき、印刷機能で PDF として保存できることを案内する
+6. 「出力先」に従って `job-application-docs/` に書き出す
+7. ファイルパスを伝え、ブラウザで開いて確認でき、印刷機能で PDF として保存できることを案内する。あわせて、書類には個人情報が含まれ、`job-application-docs/` は git の管理外にしてあることを伝える
 
 ## テンプレートの使い方
 
