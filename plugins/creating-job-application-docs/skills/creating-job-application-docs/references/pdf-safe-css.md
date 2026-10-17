@@ -5,12 +5,16 @@
 
 ## 1. ページサイズの指定
 
-`@page` ルールでページサイズと余白を明示します。
+`@page` ルールでページサイズを明示し、余白は `@page` の `margin` ではなく `.page` の `padding` で取る（テンプレートと同じ方式）。`.page` が用紙1枚に当たる。
 
 ```css
 @page {
-  size: A4 portrait;         /* または: A4 landscape, B5 portrait, letter portrait */
-  margin: 15mm;
+  size: A4 portrait;         /* または: A4 landscape, JIS-B5 portrait, letter portrait */
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 html, body {
@@ -20,12 +24,15 @@ html, body {
 
 .page {
   width: 210mm;              /* A4 縦の幅 */
-  min-height: 297mm;         /* A4 縦の高さ */
-  box-sizing: border-box;
-  padding: 15mm;
+  min-height: 297mm;         /* A4 縦の高さ（1枚に収める書類は height） */
+  padding: 15mm;             /* 余白 */
+  margin: 0 auto;
   background: #fff;
 }
 ```
+
+- `@page` の `margin` と `.page` の `padding` を併用しない。余白が二重になるうえ、`.page` が印刷できる範囲より広くなるため、ブラウザが内容を縮小して印刷する（Chrome で A4・両方 15mm の場合、約86%に縮小され、余白は約28mmになる）
+- 日本の書類で B5 といえば JIS B5（182 × 257mm）を指す。CSS の `size: B5` は ISO B5（176 × 250mm）になるため、`size: JIS-B5` を使う
 
 ## 2. 単位の指針
 
@@ -38,6 +45,8 @@ html, body {
 ビューポート単位（`vh` `vw` 等）は印刷時にブラウザによって解釈が異なるため、**絶対に使用しない** こと。
 
 ## 3. 改ページ制御
+
+`.page` は用紙1枚に当たる。1枚に収まらない書類は `.page` を枚数分並べ、下の `break-after` で改ページする。1つの `.page` から次の用紙へ内容があふれると、2枚目以降は上下の余白がなくなる。
 
 ```css
 .page {
@@ -139,6 +148,7 @@ font-family:
 書類生成後、以下を満たしているか確認してください。
 
 - [ ] `@page size` を指定している
+- [ ] `@page` の `margin` と `.page` の `padding` を併用していない
 - [ ] body/コンテナに mm で実寸を指定している
 - [ ] `<script>` タグがない
 - [ ] インタラクティブ要素（form/button/input 等）がない
