@@ -17,7 +17,7 @@
 
 ## 1. ページサイズの指定
 
-`@page` ルールでページサイズを明示し、余白は `@page` の `margin` ではなく `.page` の `padding` で取る（テンプレートと同じ方式）。`.page` が用紙1枚に当たる。
+`@page` ルールでページサイズを明示し、余白は `@page` の `margin` ではなく `.page` の `padding` で取る（テンプレートと同じ方式）。
 
 ```css
 @page {
@@ -32,14 +32,23 @@
 html, body {
   margin: 0;
   padding: 0;
+  background: #fff;
 }
 
 .page {
   width: 210mm;              /* A4 縦の幅 */
-  min-height: 297mm;         /* A4 縦の高さ（1枚に収める書類は height） */
+  min-height: 297mm;         /* A4 縦の高さ */
   padding: 15mm;             /* 余白 */
   margin: 0 auto;
   background: #fff;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;  /* 改ページしたどのページにも padding を付ける（3. 改ページ制御） */
+}
+
+/* 画面で見るときだけ、用紙の外を灰色にする（6. 色の指針） */
+@media screen {
+  html, body { background: #ddd; }
+  .page { margin-bottom: 5mm; }
 }
 ```
 
@@ -58,24 +67,32 @@ html, body {
 
 ## 3. 改ページ制御
 
-`.page` は用紙1枚に当たる。1枚に収まらない書類は `.page` を枚数分並べ、下の `break-after` で改ページする。1つの `.page` から次の用紙へ内容があふれると、2枚目以降は上下の余白がなくなる。
+`.page` の内容が用紙1枚を超えると、ブラウザが自動で次の用紙へ送る。`.page` に `box-decoration-break: clone` を指定していれば、どのページにも `.page` の padding が余白として付く。指定がないと、2枚目以降は上下の余白がなくなる。Safari は `box-decoration-break` への対応が一部にとどまり、2枚目以降に余白が付かないことがある。
+
+- **職務経歴書・エントリーシート**: 1つの `.page` に書き、改ページはブラウザに任せる
 
 ```css
-.page {
-  page-break-after: always;  /* 旧仕様 */
-  break-after: page;         /* 新仕様 */
+.page + .page {
+  break-before: page;        /* 2つ目以降の .page は新しい用紙から始める */
 }
 
-.no-break {
-  page-break-inside: avoid;
-  break-inside: avoid;
+.no-break,
+.company-block,
+.question-block {
+  break-inside: avoid;       /* まとまりの途中で改ページしない */
 }
 
-h2, h3 {
-  page-break-after: avoid;
-  break-after: avoid;
+tr {
+  break-inside: avoid;       /* 表の行の途中で改ページしない */
+}
+
+.section-title {
+  break-after: avoid;        /* 見出しだけがページの末尾に残らないようにする */
 }
 ```
+
+- `break-inside: avoid` は、会社ブロックや設問のような1ページに収まる大きさのまとまりに付ける。セクション全体のような大きなまとまりに付けると、収まらないときに丸ごと次のページへ送られ、前のページに大きな空白が残る
+- 改ページで表が分かれても見出し行が繰り返されるよう、見出し行は `<thead>` に入れる
 
 ## 4. 禁止する CSS / HTML
 
@@ -136,6 +153,7 @@ font-family:
 - 装飾色は印刷でも視認できる濃度を選ぶ
 - 背景に薄いグレーを使う場合は `#f5f5f5` 程度に留める
 - `print-color-adjust: exact;`（必要時のみ・色付き背景を確実に出すため）
+- 画面確認用の背景色（用紙の外の灰色）は `@media screen` の中に書く。`print-color-adjust: exact` を指定しているため、外に書くと最後のページの余った部分などに灰色が印刷される
 
 ```css
 * {
@@ -161,6 +179,8 @@ font-family:
 
 - [ ] `@page size` を指定している
 - [ ] `@page` の `margin` と `.page` の `padding` を併用していない
+- [ ] `.page` に `box-decoration-break: clone` を指定している
+- [ ] 画面確認用の背景色・余白を `@media screen` の中に書いている
 - [ ] `.page` に mm で用紙の実寸を指定している
 - [ ] `<script>` タグがない
 - [ ] インタラクティブ要素（form/button/input 等）がない

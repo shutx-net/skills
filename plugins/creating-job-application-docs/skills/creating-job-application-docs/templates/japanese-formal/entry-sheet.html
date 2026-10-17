@@ -16,7 +16,7 @@
   html, body {
     margin: 0;
     padding: 0;
-    background: #ddd;
+    background: #fff;
     font-family: "Hiragino Mincho ProN", "Yu Mincho", "MS Mincho", "Noto Serif CJK JP", serif;
     color: #000;
   }
@@ -24,8 +24,16 @@
     width: 210mm;
     min-height: 297mm;
     padding: 15mm;
-    margin: 0 auto 5mm;
+    margin: 0 auto;
     background: #fff;
+    /* 1枚を超えると自動で改ページされ、どのページにも上下の余白が付く */
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+  /* 画面で見るときだけ、用紙の外を灰色にする */
+  @media screen {
+    html, body { background: #ddd; }
+    .page { margin-bottom: 5mm; }
   }
   .header {
     display: table;
