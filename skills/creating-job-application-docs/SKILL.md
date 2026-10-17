@@ -3,30 +3,28 @@ name: creating-job-application-docs
 description: 就職・転職活動の応募書類（履歴書・職務経歴書・エントリーシート）を、印刷・PDF化を前提とした単一ファイルの HTML/CSS で作成する。「履歴書を作って」「職務経歴書を HTML で書いて」「ES を作成して」「就活書類を作りたい」等の依頼や、応募書類を HTML で用意したいときに使用する。
 ---
 
-# 就活書類作成スキル
+# creating-job-application-docs — Job Application Documents
 
-履歴書・職務経歴書・エントリーシートを HTML/CSS で生成し、`output/` ディレクトリに保存します。
+履歴書・職務経歴書・エントリーシートを HTML/CSS で生成し、`output/` ディレクトリに保存する。
 
 ## 対応書類
 
-| 書類 | 略称 | テンプレート参照 |
-|------|------|---------------|
-| 履歴書 | rirekisho | [references/rirekisho-fields.md](references/rirekisho-fields.md) |
-| 職務経歴書 | shokumu-keirekisho | [references/shokumu-keirekisho-fields.md](references/shokumu-keirekisho-fields.md) |
-| エントリーシート | entry-sheet | [references/entry-sheet-fields.md](references/entry-sheet-fields.md) |
+| 書類 | 略称 | 記載項目 |
+|------|------|---------|
+| 履歴書 | rirekisho | `LOAD references/rirekisho-fields.md` |
+| 職務経歴書 | shokumu-keirekisho | `LOAD references/shokumu-keirekisho-fields.md` |
+| エントリーシート | entry-sheet | `LOAD references/entry-sheet-fields.md` |
 
 ## 必須ヒアリング項目
 
-書類生成前に **必ず以下を確認** してください。指示がない場合は質問します。
+書類を生成する前に **必ず以下を確認** する。指示がない項目は推測せず、ユーザーに質問する。
 
 1. **書類の種類** （履歴書 / 職務経歴書 / エントリーシート）
 2. **用紙サイズ** （A4 / B5 / US Letter など）
 3. **用紙の向き** （縦 / 横）
 4. **デザインスタイル** （`japanese-formal` / `modern-simple`）
 5. **記載内容** （氏名・学歴・職歴・志望動機など、書類に応じた必要項目）
-   - 各書類の必要項目は `references/*-fields.md` を参照
-
-不明な項目は推測せず、ユーザーに質問してください。
+   - 書類ごとの必要項目は、「対応書類」の表にある記載項目の「必須ヒアリング項目」にある
 
 ## デザインスタイル
 
@@ -37,35 +35,17 @@ description: 就職・転職活動の応募書類（履歴書・職務経歴書�
 
 ## 生成ルール
 
-### 必須遵守事項
+1. **HTML/CSS のみで構成する。** JavaScript は一切含めない（`<script>` タグを書かない）
+2. **PDF 化を見据えた構成にする。** 印刷・PDF 化で崩れる、または意味を持たない CSS / HTML は使わない
+3. **用紙サイズを CSS で明示する。** `@page` の `size` を必ず指定し、`.page` に用紙の実寸を mm で指定する
+4. **CSS は `<style>` タグ内に同梱し、単一の HTML で完結させる。** 外部 CSS ファイルや CDN を参照しない
+5. **PDF 変換処理は行わない。** HTML ファイルのみを生成し、`.pdf` 出力やライブラリ（puppeteer 等）は使わない
 
-1. **HTML/CSS のみで構成する**
-   - JavaScript は一切含めない
-   - `<script>` タグを書かない
-
-2. **PDF 化を見据えた構成にする**
-   - インタラクティブ要素禁止（`<form>`, `<input>`, `<button>`, `<a href="javascript:">` など）
-   - `:hover` `:focus` 等の対話的な視覚変化を使わない
-   - `position: fixed` / `sticky` を使わない
-   - アニメーション・トランジション禁止
-   - viewport 単位（`vh`/`vw`）禁止
-   - 詳細は [references/pdf-safe-css.md](references/pdf-safe-css.md) を参照
-
-3. **用紙サイズを CSS で明示する**
-   - `@page { size: ... }` を必ず指定
-   - body/コンテナに mm 単位で実寸を指定（例: A4 縦なら `width: 210mm; height: 297mm;`）
-   - `box-sizing: border-box` で余白計算を統一
-
-4. **CSS は 1 ファイルに同梱（`<style>` タグ内）**
-   - 単一 HTML で完結させ、Live Server で開けば即確認可能にする
-   - 外部 CSS ファイルや CDN を参照しない
-
-5. **PDF 変換処理は行わない**
-   - HTML ファイルのみを生成し、`.pdf` 出力やライブラリ（puppeteer 等）は使わない
+使わない CSS / HTML の一覧と、ページサイズ・改ページなどの書き方は `LOAD references/pdf-safe-css.md` にある。
 
 ## 出力先
 
-プロジェクトルート直下の `output/` ディレクトリに保存します。
+プロジェクトルート直下の `output/` ディレクトリに保存する。
 
 ```
 output/
@@ -74,32 +54,21 @@ output/
 └── entry-sheet_YYYYMMDD.html
 ```
 
-- `output/` が存在しない場合は作成
-- ファイル名は `<書類略称>_<YYYYMMDD>.html` 形式
-- 同名ファイルがある場合は `_2`, `_3` を付与
-
-## 用紙サイズ早見表
-
-| 規格 | 縦向き (mm) | 横向き (mm) |
-|------|-----------|-----------|
-| A4 | 210 × 297 | 297 × 210 |
-| B5（JIS B5） | 182 × 257 | 257 × 182 |
-| A3 | 297 × 420 | 420 × 297 |
-| US Letter | 215.9 × 279.4 | 279.4 × 215.9 |
-
-B5 は CSS では `size: JIS-B5` で指定する（`size: B5` は ISO B5 の 176 × 250mm になる）。
+- `output/` が存在しなければ作成する
+- ファイル名は `<略称>_<YYYYMMDD>.html` 形式にする
+- 同名ファイルがあれば `_2`, `_3` を付ける
 
 ## ワークフロー
 
 1. ユーザーから書類作成の依頼を受ける
-2. **必須ヒアリング項目** をすべて確認（不明分は質問）
-3. 該当する `templates/<style>/<doc>.html` をテンプレートとして読み込む
-4. 該当する `references/<doc>-fields.md` でフィールド構成を確認
-5. ユーザー入力でテンプレートを埋めて HTML を生成
-6. `output/` ディレクトリに書き出し
-7. ファイルパスをユーザーに伝え、Live Server で確認するよう案内
+2. **必須ヒアリング項目** をすべて確認する
+3. 該当する `templates/<スタイル>/<略称>.html` をテンプレートとして読み込む
+4. 該当する書類の記載項目（「対応書類」の表）を確認する
+5. ユーザーの入力でテンプレートを埋めて HTML を生成する
+6. `output/` ディレクトリに書き出す
+7. ファイルパスを伝え、ブラウザで開いて確認でき、印刷機能で PDF として保存できることを案内する
 
 ## テンプレート利用の注意
 
-`templates/` 配下の HTML は **A4 縦** をデフォルトとしたサンプルです。
-ユーザーが他のサイズ・向きを指定した場合は、`@page size` と body の `width`/`height` を必ず変更してください。
+`templates/` 配下の HTML は **A4 縦** をデフォルトとしたサンプルである。
+ユーザーが他のサイズ・向きを指定した場合は、`@page` の `size` と `.page` の `width` / `height`（または `min-height`）を必ず変更する。B5 の指定方法は pdf-safe-css.md の「1. ページサイズの指定」にある。
