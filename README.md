@@ -11,7 +11,7 @@ Claude Code 用のスキル・プラグイン置き場。このリポジトリ�
 | --- | --- |
 | [`impl`](skills/impl/SKILL.md) | 実装タスクをフェーズ分割し、フェーズごとの計画JSONを書き出してから段階的に実装する |
 | [`commit-message`](skills/commit-message/SKILL.md) | git commitのメッセージを Conventional Commits 形式（`feat:` / `fix:` 等のプレフィックス）で書く |
-| [`create-doc-for-job-hunt`](skills/create-doc-for-job-hunt/SKILL.md) | 履歴書・職務経歴書・エントリーシートを、印刷・PDF化を前提とした HTML/CSS で作成する |
+| [`creating-job-application-docs`](skills/creating-job-application-docs/SKILL.md) | 履歴書・職務経歴書・エントリーシートを、印刷・PDF化を前提とした HTML/CSS で作成する |
 
 ## インストール
 

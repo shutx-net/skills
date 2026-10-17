@@ -1,5 +1,5 @@
 ---
-name: create-doc-for-job-hunt
+name: creating-job-application-docs
 description: |
   就職活動用書類（履歴書・職務経歴書・エントリーシート）を HTML/CSS で作成します。
   「履歴書を作って」「職務経歴書を HTML で書いて」「エントリーシートを作成して」
