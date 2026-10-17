@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>職務経歴書</title>
+<style>
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+  * {
+    box-sizing: border-box;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #eee;
+    font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, "Yu Gothic", "Noto Sans CJK JP", sans-serif;
+    color: #222;
+  }
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    padding: 18mm 16mm;
+    margin: 0 auto 5mm;
+    background: #fff;
+  }
+  .header {
+    display: table;
+    width: 100%;
+    margin-bottom: 8mm;
+  }
+  .header .left, .header .right {
+    display: table-cell;
+    vertical-align: bottom;
+  }
+  .header .right { text-align: right; font-size: 9.5pt; color: #555; }
+  .doc-title {
+    font-size: 22pt;
+    margin: 0;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+  }
+  .section {
+    margin-bottom: 7mm;
+    break-inside: avoid;
+  }
+  .section-title {
+    font-size: 11pt;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    margin-bottom: 3mm;
+    padding-bottom: 1mm;
+    border-bottom: 1px solid #999;
+  }
+  .summary {
+    font-size: 10pt;
+    line-height: 1.8;
+    white-space: pre-wrap;
+  }
+  .company-block {
+    margin-bottom: 6mm;
+    break-inside: avoid;
+  }
+  .company-name {
+    font-size: 12pt;
+    font-weight: 500;
+    margin-bottom: 1mm;
+  }
+  .company-meta {
+    font-size: 9pt;
+    color: #666;
+    margin-bottom: 2mm;
+  }
+  .project-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9.5pt;
+    line-height: 1.5;
+  }
+  .project-table th, .project-table td {
+    padding: 2mm;
+    border-bottom: 1px solid #ddd;
+    vertical-align: top;
+    text-align: left;
+  }
+  .project-table th {
+    font-weight: 500;
+    color: #555;
+    border-bottom: 1.5px solid #999;
+    font-size: 9pt;
+  }
+  .skills-grid {
+    display: table;
+    width: 100%;
+    font-size: 10pt;
+  }
+  .skills-grid .row {
+    display: table-row;
+  }
+  .skills-grid .label, .skills-grid .value {
+    display: table-cell;
+    padding: 1.8mm 2mm;
+    border-bottom: 1px solid #eee;
+    vertical-align: top;
+  }
+  .skills-grid .label {
+    width: 26mm;
+    color: #666;
+    font-size: 9pt;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <div class="left"><h1 class="doc-title">職務経歴書</h1></div>
+    <div class="right">
+      {{作成日: 2026年5月10日}}<br>
+      氏名: {{氏名}}
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">職務要約</div>
+    <div class="summary">{{300〜400字程度の要約}}</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">職務経歴</div>
+
+    <div class="company-block">
+      <div class="company-name">{{会社名}}</div>
+      <div class="company-meta">
+        {{在籍期間}} ／ {{事業内容}} ／ 従業員 {{}}名 ／ {{雇用形態}}
+      </div>
+      <table class="project-table">
+        <tr>
+          <th style="width: 28mm;">期間</th>
+          <th>プロジェクト / 業務</th>
+          <th style="width: 16mm;">役割</th>
+          <th style="width: 38mm;">使用技術</th>
+        </tr>
+        <tr>
+          <td>{{YYYY/MM 〜 YYYY/MM}}</td>
+          <td>{{プロジェクト名と業務内容}}</td>
+          <td>{{役割}}</td>
+          <td>{{言語・FW・クラウド}}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">保有スキル</div>
+    <div class="skills-grid">
+      <div class="row"><div class="label">言語</div><div class="value">{{TypeScript, Python, ...}}</div></div>
+      <div class="row"><div class="label">FW</div><div class="value">{{React, Next.js, ...}}</div></div>
+      <div class="row"><div class="label">クラウド</div><div class="value">{{AWS, GCP, ...}}</div></div>
+      <div class="row"><div class="label">DB</div><div class="value">{{PostgreSQL, ...}}</div></div>
+      <div class="row"><div class="label">ツール</div><div class="value">{{Git, Docker, ...}}</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">資格・認定</div>
+    <div class="summary">・{{YYYY年MM月}}　{{資格名}}</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">自己PR</div>
+    <div class="summary">{{200〜400字}}</div>
+  </div>
+</div>
+</body>
+</html>

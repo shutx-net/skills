@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>履歴書</title>
+<style>
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+  * {
+    box-sizing: border-box;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #ddd;
+    font-family: "Hiragino Mincho ProN", "Yu Mincho", "MS Mincho", "Noto Serif CJK JP", serif;
+    color: #000;
+  }
+  .page {
+    width: 210mm;
+    height: 297mm;
+    padding: 12mm 12mm 10mm;
+    margin: 0 auto;
+    background: #fff;
+  }
+  .doc-title {
+    font-size: 22pt;
+    text-align: center;
+    letter-spacing: 1em;
+    margin: 0 0 4mm;
+    font-weight: bold;
+  }
+  .doc-date {
+    text-align: right;
+    font-size: 10pt;
+    margin-bottom: 4mm;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10pt;
+    line-height: 1.4;
+  }
+  th, td {
+    border: 1px solid #000;
+    padding: 2mm 2mm;
+    vertical-align: top;
+    text-align: left;
+  }
+  th {
+    background: #f0f0f0;
+    font-weight: normal;
+    width: 18mm;
+    text-align: center;
+    white-space: nowrap;
+  }
+  .basic-table .furigana {
+    font-size: 8pt;
+    color: #333;
+  }
+  .basic-table .name {
+    font-size: 14pt;
+    font-weight: bold;
+  }
+  .photo-cell {
+    width: 32mm;
+    height: 42mm;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 8pt;
+    color: #888;
+  }
+  .photo-cell .photo-box {
+    width: 30mm;
+    height: 40mm;
+    border: 1px dashed #888;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .section-title {
+    font-size: 11pt;
+    font-weight: bold;
+    margin: 6mm 0 2mm;
+    border-bottom: 1.5px solid #000;
+    padding-bottom: 1mm;
+  }
+  .history-table th.year { width: 14mm; }
+  .history-table th.month { width: 12mm; }
+  .history-table .center { text-align: center; }
+  .history-table .right { text-align: right; }
+  .free-area {
+    border: 1px solid #000;
+    padding: 3mm;
+    min-height: 35mm;
+    font-size: 10pt;
+    line-height: 1.6;
+    white-space: pre-wrap;
+  }
+  .two-col {
+    display: table;
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .two-col > .col {
+    display: table-cell;
+    vertical-align: top;
+  }
+  .two-col > .col + .col { padding-left: 4mm; }
+</style>
+</head>
+<body>
+<div class="page">
+  <h1 class="doc-title">履　歴　書</h1>
+  <div class="doc-date">{{作成日: 2026年5月10日 現在}}</div>
+
+  <table class="basic-table">
+    <tr>
+      <th>ふりがな</th>
+      <td colspan="3" class="furigana">{{ふりがな}}</td>
+      <td rowspan="5" class="photo-cell">
+        <div class="photo-box">写真<br>30×40mm</div>
+      </td>
+    </tr>
+    <tr>
+      <th>氏　名</th>
+      <td colspan="3" class="name">{{氏名}}</td>
+    </tr>
+    <tr>
+      <th>生年月日</th>
+      <td colspan="3">{{西暦/和暦 生年月日}} 生（満 {{年齢}} 歳）</td>
+    </tr>
+    <tr>
+      <th>性別</th>
+      <td colspan="3">{{性別}}</td>
+    </tr>
+    <tr>
+      <th>ふりがな</th>
+      <td colspan="3" class="furigana">{{現住所ふりがな}}</td>
+    </tr>
+    <tr>
+      <th>現住所</th>
+      <td colspan="4">〒{{郵便番号}}<br>{{現住所}}</td>
+    </tr>
+    <tr>
+      <th>電話</th>
+      <td>{{電話番号}}</td>
+      <th>E-mail</th>
+      <td colspan="2">{{メールアドレス}}</td>
+    </tr>
+  </table>
+
+  <div class="section-title">学歴・職歴</div>
+  <table class="history-table">
+    <tr>
+      <th class="year">年</th>
+      <th class="month">月</th>
+      <th>学歴・職歴（各別にまとめて書く）</th>
+    </tr>
+    <tr><td class="center" colspan="2">学　歴</td><td></td></tr>
+    <tr><td class="center">{{年}}</td><td class="center">{{月}}</td><td>{{学歴内容}}</td></tr>
+    <tr><td class="center"></td><td class="center"></td><td></td></tr>
+
+    <tr><td class="center" colspan="2">職　歴</td><td></td></tr>
+    <tr><td class="center">{{年}}</td><td class="center">{{月}}</td><td>{{職歴内容}}</td></tr>
+    <tr><td class="center"></td><td class="center"></td><td class="right">以　上</td></tr>
+  </table>
+
+  <div class="section-title">免許・資格</div>
+  <table class="history-table">
+    <tr><th class="year">年</th><th class="month">月</th><th>免許・資格</th></tr>
+    <tr><td class="center">{{年}}</td><td class="center">{{月}}</td><td>{{資格名}}</td></tr>
+  </table>
+
+  <div class="section-title">志望の動機・自己PR・趣味・特技</div>
+  <div class="free-area">{{志望動機・自己PR・趣味特技}}</div>
+
+  <div class="section-title">本人希望記入欄</div>
+  <div class="free-area">{{本人希望記入欄}}</div>
+</div>
+</body>
+</html>

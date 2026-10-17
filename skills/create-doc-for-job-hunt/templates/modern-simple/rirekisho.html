@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>履歴書</title>
+<style>
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+  * {
+    box-sizing: border-box;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #eee;
+    font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, "Yu Gothic", "Noto Sans CJK JP", sans-serif;
+    color: #222;
+  }
+  .page {
+    width: 210mm;
+    height: 297mm;
+    padding: 18mm 16mm;
+    margin: 0 auto;
+    background: #fff;
+  }
+  .header {
+    display: table;
+    width: 100%;
+    margin-bottom: 8mm;
+  }
+  .header .title-col, .header .date-col, .header .photo-col {
+    display: table-cell;
+    vertical-align: top;
+  }
+  .doc-title {
+    font-size: 24pt;
+    margin: 0;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+  }
+  .doc-date {
+    font-size: 9.5pt;
+    color: #666;
+    margin-top: 2mm;
+  }
+  .photo-col {
+    width: 32mm;
+    text-align: right;
+  }
+  .photo-box {
+    width: 30mm;
+    height: 40mm;
+    border: 1px solid #ccc;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8pt;
+    color: #aaa;
+  }
+  .basic-grid {
+    display: table;
+    width: 100%;
+    border-top: 1px solid #999;
+    border-bottom: 1px solid #999;
+    margin-bottom: 8mm;
+    font-size: 10pt;
+  }
+  .basic-grid .row {
+    display: table-row;
+  }
+  .basic-grid .label, .basic-grid .value {
+    display: table-cell;
+    padding: 2.5mm 2mm;
+    border-bottom: 1px solid #eee;
+    vertical-align: top;
+  }
+  .basic-grid .label {
+    width: 26mm;
+    color: #666;
+    font-size: 9pt;
+  }
+  .name {
+    font-size: 16pt;
+    font-weight: 500;
+  }
+  .furigana {
+    font-size: 8.5pt;
+    color: #888;
+  }
+  .section {
+    margin-bottom: 7mm;
+    break-inside: avoid;
+  }
+  .section-title {
+    font-size: 11pt;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    color: #333;
+    margin-bottom: 3mm;
+    padding-bottom: 1mm;
+    border-bottom: 1px solid #999;
+  }
+  .history {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 10pt;
+    line-height: 1.6;
+  }
+  .history td {
+    padding: 1.5mm 2mm;
+    border-bottom: 1px solid #eee;
+    vertical-align: top;
+  }
+  .history .col-date {
+    width: 26mm;
+    color: #555;
+    white-space: nowrap;
+  }
+  .history .col-content { color: #222; }
+  .free-text {
+    font-size: 10pt;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    color: #222;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <div class="title-col">
+      <h1 class="doc-title">履歴書</h1>
+      <div class="doc-date">{{作成日: 2026年5月10日 現在}}</div>
+    </div>
+    <div class="date-col"></div>
+    <div class="photo-col">
+      <div class="photo-box">Photo<br>30 × 40 mm</div>
+    </div>
+  </div>
+
+  <div class="basic-grid">
+    <div class="row">
+      <div class="label">氏名</div>
+      <div class="value">
+        <div class="furigana">{{ふりがな}}</div>
+        <div class="name">{{氏名}}</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="label">生年月日</div>
+      <div class="value">{{生年月日}}（満 {{年齢}} 歳）</div>
+    </div>
+    <div class="row">
+      <div class="label">性別</div>
+      <div class="value">{{性別}}</div>
+    </div>
+    <div class="row">
+      <div class="label">住所</div>
+      <div class="value">〒{{郵便番号}}　{{現住所}}</div>
+    </div>
+    <div class="row">
+      <div class="label">電話</div>
+      <div class="value">{{電話番号}}</div>
+    </div>
+    <div class="row">
+      <div class="label">メール</div>
+      <div class="value">{{メールアドレス}}</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">学歴</div>
+    <table class="history">
+      <tr><td class="col-date">{{YYYY年MM月}}</td><td class="col-content">{{学校名 学部 学科 入学/卒業}}</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">職歴</div>
+    <table class="history">
+      <tr><td class="col-date">{{YYYY年MM月}}</td><td class="col-content">{{会社名 入社/退社/在籍中}}</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">免許・資格</div>
+    <table class="history">
+      <tr><td class="col-date">{{YYYY年MM月}}</td><td class="col-content">{{資格名}}</td></tr>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-title">志望動機・自己PR</div>
+    <div class="free-text">{{本文}}</div>
+  </div>
+</div>
+</body>
+</html>

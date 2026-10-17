@@ -20,6 +20,13 @@
       "description": "Conventional Commits に準拠したコミットメッセージの規約",
       "category": "development",
       "keywords": ["git", "commit", "commit-message", "conventional-commits"]
+    },
+    {
+      "name": "create-doc-for-job-hunt",
+      "source": "./plugins/create-doc-for-job-hunt",
+      "description": "就職活動用書類（履歴書・職務経歴書・エントリーシート）を、印刷・PDF化を前提とした HTML/CSS で作成する",
+      "category": "productivity",
+      "keywords": ["job-hunting", "resume", "rirekisho", "shokumu-keirekisho", "entry-sheet", "html"]
     }
   ]
 }
