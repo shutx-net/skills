@@ -16,16 +16,27 @@
   html, body {
     margin: 0;
     padding: 0;
-    background: #ddd;
+    background: #fff;
     font-family: "Hiragino Mincho ProN", "Yu Mincho", "MS Mincho", "Noto Serif CJK JP", serif;
     color: #000;
   }
+  /* 2枚組。.page が用紙1枚に当たる */
   .page {
     width: 210mm;
-    height: 297mm;
+    min-height: 297mm;
     padding: 12mm 12mm 10mm;
     margin: 0 auto;
     background: #fff;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+  .page + .page {
+    break-before: page;
+  }
+  /* 画面で見るときだけ、用紙の外を灰色にして1枚ずつ離す */
+  @media screen {
+    html, body { background: #ddd; }
+    .page { margin-bottom: 5mm; }
   }
   .doc-title {
     font-size: 22pt;
@@ -80,6 +91,7 @@
     border: 1px dashed #888;
     margin: 0 auto;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
   }
@@ -90,6 +102,16 @@
     border-bottom: 1.5px solid #000;
     padding-bottom: 1mm;
   }
+  .page > .section-title:first-child {
+    margin-top: 0;
+  }
+  /* 行の高さを固定し、1枚に入る行数を決めておく（目安は rirekisho-fields.md） */
+  .history-table th,
+  .history-table td {
+    height: 7mm;
+    padding: 0 2mm;
+    vertical-align: middle;
+  }
   .history-table th.year { width: 14mm; }
   .history-table th.month { width: 12mm; }
   .history-table .center { text-align: center; }
@@ -97,21 +119,12 @@
   .free-area {
     border: 1px solid #000;
     padding: 3mm;
-    min-height: 35mm;
     font-size: 10pt;
     line-height: 1.6;
     white-space: pre-wrap;
   }
-  .two-col {
-    display: table;
-    width: 100%;
-    border-collapse: collapse;
-  }
-  .two-col > .col {
-    display: table-cell;
-    vertical-align: top;
-  }
-  .two-col > .col + .col { padding-left: 4mm; }
+  .free-area.motivation { min-height: 80mm; }
+  .free-area.wishes { min-height: 40mm; }
 </style>
 </head>
 <body>
@@ -162,15 +175,16 @@
       <th class="month">月</th>
       <th>学歴・職歴（各別にまとめて書く）</th>
     </tr>
-    <tr><td class="center" colspan="2">学　歴</td><td></td></tr>
+    <tr><td></td><td></td><td class="center">学　歴</td></tr>
     <tr><td class="center">{{年}}</td><td class="center">{{月}}</td><td>{{学歴内容}}</td></tr>
-    <tr><td class="center"></td><td class="center"></td><td></td></tr>
-
-    <tr><td class="center" colspan="2">職　歴</td><td></td></tr>
+    <tr><td></td><td></td><td></td></tr>
+    <tr><td></td><td></td><td class="center">職　歴</td></tr>
     <tr><td class="center">{{年}}</td><td class="center">{{月}}</td><td>{{職歴内容}}</td></tr>
-    <tr><td class="center"></td><td class="center"></td><td class="right">以　上</td></tr>
+    <tr><td></td><td></td><td class="right">以　上</td></tr>
   </table>
+</div>
 
+<div class="page">
   <div class="section-title">免許・資格</div>
   <table class="history-table">
     <tr><th class="year">年</th><th class="month">月</th><th>免許・資格</th></tr>
@@ -178,10 +192,10 @@
   </table>
 
   <div class="section-title">志望の動機・自己PR・趣味・特技</div>
-  <div class="free-area">{{志望動機・自己PR・趣味特技}}</div>
+  <div class="free-area motivation">{{志望動機・自己PR・趣味特技}}</div>
 
   <div class="section-title">本人希望記入欄</div>
-  <div class="free-area">{{本人希望記入欄}}</div>
+  <div class="free-area wishes">{{本人希望記入欄}}</div>
 </div>
 </body>
 </html>

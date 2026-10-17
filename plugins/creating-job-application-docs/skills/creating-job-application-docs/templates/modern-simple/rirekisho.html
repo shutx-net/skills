@@ -16,16 +16,27 @@
   html, body {
     margin: 0;
     padding: 0;
-    background: #eee;
+    background: #fff;
     font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, "Yu Gothic", "Noto Sans CJK JP", sans-serif;
     color: #222;
   }
+  /* 2枚組。.page が用紙1枚に当たる */
   .page {
     width: 210mm;
-    height: 297mm;
+    min-height: 297mm;
     padding: 18mm 16mm;
     margin: 0 auto;
     background: #fff;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+  .page + .page {
+    break-before: page;
+  }
+  /* 画面で見るときだけ、用紙の外を灰色にして1枚ずつ離す */
+  @media screen {
+    html, body { background: #eee; }
+    .page { margin-bottom: 5mm; }
   }
   .header {
     display: table;
@@ -56,6 +67,7 @@
     height: 40mm;
     border: 1px solid #ccc;
     display: inline-flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     font-size: 8pt;
@@ -108,12 +120,14 @@
     width: 100%;
     border-collapse: collapse;
     font-size: 10pt;
-    line-height: 1.6;
+    line-height: 1.4;
   }
+  /* 行の高さを固定し、1枚に入る行数を決めておく（目安は rirekisho-fields.md） */
   .history td {
-    padding: 1.5mm 2mm;
+    height: 7.5mm;
+    padding: 0 2mm;
     border-bottom: 1px solid #eee;
-    vertical-align: top;
+    vertical-align: middle;
   }
   .history .col-date {
     width: 26mm;
@@ -127,6 +141,8 @@
     white-space: pre-wrap;
     color: #222;
   }
+  .free-text.motivation { min-height: 80mm; }
+  .free-text.wishes { min-height: 30mm; }
 </style>
 </head>
 <body>
@@ -185,7 +201,9 @@
       <tr><td class="col-date">{{YYYY年MM月}}</td><td class="col-content">{{会社名 入社/退社/在籍中}}</td></tr>
     </table>
   </div>
+</div>
 
+<div class="page">
   <div class="section">
     <div class="section-title">免許・資格</div>
     <table class="history">
@@ -195,7 +213,12 @@
 
   <div class="section">
     <div class="section-title">志望動機・自己PR</div>
-    <div class="free-text">{{本文}}</div>
+    <div class="free-text motivation">{{本文}}</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">本人希望記入欄</div>
+    <div class="free-text wishes">{{本人希望記入欄}}</div>
   </div>
 </div>
 </body>
