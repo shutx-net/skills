@@ -21,7 +21,7 @@
 
 ```css
 @page {
-  size: A4 portrait;         /* または: A4 landscape, JIS-B5 portrait, letter portrait */
+  size: A4 portrait;         /* または: JIS-B5 portrait, letter portrait */
   margin: 0;
 }
 
@@ -54,6 +54,7 @@ html, body {
 
 - `@page` の `margin` と `.page` の `padding` を併用しない。余白が二重になるうえ、`.page` が印刷できる範囲より広くなるため、ブラウザが内容を縮小して印刷する（Chrome で A4・両方 15mm の場合、約86%に縮小され、余白は約28mmになる）
 - 日本の書類で B5 といえば JIS B5（182 × 257mm）を指す。CSS の `size: B5` は ISO B5（176 × 250mm）になるため、`size: JIS-B5` を使う
+- 横向きは履歴書の見開きだけで使う（A4 の2枚組なら `A3 landscape`）。作り方は rirekisho-fields.md の「横向き（見開き）」にある
 
 ## 2. 単位の指針
 
