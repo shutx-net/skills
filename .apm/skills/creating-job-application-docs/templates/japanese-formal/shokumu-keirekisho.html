@@ -16,7 +16,7 @@
   html, body {
     margin: 0;
     padding: 0;
-    background: #ddd;
+    background: #fff;
     font-family: "Hiragino Mincho ProN", "Yu Mincho", "MS Mincho", "Noto Serif CJK JP", serif;
     color: #000;
   }
@@ -24,8 +24,16 @@
     width: 210mm;
     min-height: 297mm;
     padding: 15mm;
-    margin: 0 auto 5mm;
+    margin: 0 auto;
     background: #fff;
+    /* 1枚を超えると自動で改ページされ、どのページにも上下の余白が付く */
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+  /* 画面で見るときだけ、用紙の外を灰色にする */
+  @media screen {
+    html, body { background: #ddd; }
+    .page { margin-bottom: 5mm; }
   }
   .header {
     display: table;
@@ -45,7 +53,6 @@
   }
   .section {
     margin-bottom: 6mm;
-    break-inside: avoid;
   }
   .section-title {
     font-size: 11pt;
@@ -53,11 +60,13 @@
     border-bottom: 2px solid #000;
     padding-bottom: 1mm;
     margin-bottom: 3mm;
+    break-after: avoid;
   }
   .summary {
     font-size: 10pt;
     line-height: 1.7;
     white-space: pre-wrap;
+    break-inside: avoid;
   }
   table {
     width: 100%;
@@ -81,6 +90,9 @@
     break-inside: avoid;
   }
   .company-meta th { width: 22mm; }
+  tr {
+    break-inside: avoid;
+  }
   .skills-table th { width: 24mm; }
 </style>
 </head>
@@ -112,18 +124,22 @@
       </table>
 
       <table style="margin-top: 2mm;">
-        <tr>
-          <th style="width: 28mm;">期間</th>
-          <th>プロジェクト / 業務内容</th>
-          <th style="width: 16mm;">役割</th>
-          <th style="width: 38mm;">使用技術</th>
-        </tr>
-        <tr>
-          <td>{{YYYY/MM 〜 YYYY/MM}}</td>
-          <td>{{プロジェクト名 / 業務内容}}</td>
-          <td>{{役割}}</td>
-          <td>{{言語・FW・クラウド等}}</td>
-        </tr>
+        <thead>
+          <tr>
+            <th style="width: 28mm;">期間</th>
+            <th>プロジェクト / 業務内容</th>
+            <th style="width: 16mm;">役割</th>
+            <th style="width: 38mm;">使用技術</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{YYYY/MM 〜 YYYY/MM}}</td>
+            <td>{{プロジェクト名 / 業務内容}}</td>
+            <td>{{役割}}</td>
+            <td>{{言語・FW・クラウド等}}</td>
+          </tr>
+        </tbody>
       </table>
     </div>
   </div>

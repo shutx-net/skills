@@ -16,7 +16,7 @@
   html, body {
     margin: 0;
     padding: 0;
-    background: #eee;
+    background: #fff;
     font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, "Yu Gothic", "Noto Sans CJK JP", sans-serif;
     color: #222;
   }
@@ -24,8 +24,16 @@
     width: 210mm;
     min-height: 297mm;
     padding: 18mm 16mm;
-    margin: 0 auto 5mm;
+    margin: 0 auto;
     background: #fff;
+    /* 1枚を超えると自動で改ページされ、どのページにも上下の余白が付く */
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+  /* 画面で見るときだけ、用紙の外を灰色にする */
+  @media screen {
+    html, body { background: #eee; }
+    .page { margin-bottom: 5mm; }
   }
   .header {
     display: table;
@@ -45,7 +53,6 @@
   }
   .section {
     margin-bottom: 7mm;
-    break-inside: avoid;
   }
   .section-title {
     font-size: 11pt;
@@ -54,11 +61,13 @@
     margin-bottom: 3mm;
     padding-bottom: 1mm;
     border-bottom: 1px solid #999;
+    break-after: avoid;
   }
   .summary {
     font-size: 10pt;
     line-height: 1.8;
     white-space: pre-wrap;
+    break-inside: avoid;
   }
   .company-block {
     margin-bottom: 6mm;
@@ -91,6 +100,9 @@
     color: #555;
     border-bottom: 1.5px solid #999;
     font-size: 9pt;
+  }
+  tr {
+    break-inside: avoid;
   }
   .skills-grid {
     display: table;
@@ -137,18 +149,22 @@
         {{在籍期間}} ／ {{事業内容}} ／ 従業員 {{}}名 ／ {{雇用形態}}
       </div>
       <table class="project-table">
-        <tr>
-          <th style="width: 28mm;">期間</th>
-          <th>プロジェクト / 業務</th>
-          <th style="width: 16mm;">役割</th>
-          <th style="width: 38mm;">使用技術</th>
-        </tr>
-        <tr>
-          <td>{{YYYY/MM 〜 YYYY/MM}}</td>
-          <td>{{プロジェクト名と業務内容}}</td>
-          <td>{{役割}}</td>
-          <td>{{言語・FW・クラウド}}</td>
-        </tr>
+        <thead>
+          <tr>
+            <th style="width: 28mm;">期間</th>
+            <th>プロジェクト / 業務</th>
+            <th style="width: 16mm;">役割</th>
+            <th style="width: 38mm;">使用技術</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{YYYY/MM 〜 YYYY/MM}}</td>
+            <td>{{プロジェクト名と業務内容}}</td>
+            <td>{{役割}}</td>
+            <td>{{言語・FW・クラウド}}</td>
+          </tr>
+        </tbody>
       </table>
     </div>
   </div>
