@@ -66,6 +66,8 @@ scripts/
 
 SKILL.mdは**自己完結**で、どちらのチャネル経由でも完全に同一の内容です。専用サブエージェントは同梱せず、実行環境にあるサブエージェント機構（あれば）を使い、無ければ自力実行にフォールバックします。これによりチャネル間で挙動が分岐しません。
 
+同じ理由で、frontmatter には Agent Skills 仕様にある項目（`name` / `description` / `license` / `compatibility` / `metadata` / `allowed-tools`）だけを使います。Claude Code 独自の項目（`argument-hint` / `when_to_use` 等）は、Claude Code の外では働かず、claude.ai へのアップロードではエラーになります。CI の skills-ref の検証で検出されます。
+
 ### スキルを編集するとき
 
 1. `skills/<name>/` を編集する（生成先を直接編集しない）
@@ -84,6 +86,13 @@ CIは `./scripts/sync-skills.sh --check` を実行し、生成先がSSoTと乖�
 ```bash
 ./scripts/lint-skills.sh          # マニフェスト・スキル規約の検証
 ./scripts/sync-skills.sh --check  # 生成先の乖離チェック
+```
+
+CIは、Agent Skills 仕様の検証ツール [skills-ref](https://github.com/agentskills/agentskills/tree/main/skills-ref) でも各スキルを検証します。手元で実行するには Python 3.11 以上が必要です:
+
+```bash
+pip install skills-ref==0.1.1
+agentskills validate skills/<name>   # コマンド名は agentskills
 ```
 
 ### 評価（evals）
