@@ -24,7 +24,7 @@
     {
       "name": "creating-job-application-docs",
       "source": "./plugins/creating-job-application-docs",
-      "description": "就職活動用書類（履歴書・職務経歴書・エントリーシート）を、印刷・PDF化を前提とした HTML/CSS で作成する",
+      "description": "就職・転職活動の応募書類（履歴書・職務経歴書・エントリーシート）を、印刷・PDF化を前提とした HTML/CSS で作成する",
       "category": "productivity",
       "keywords": ["job-application", "job-hunting", "resume", "rirekisho", "shokumu-keirekisho", "entry-sheet", "html"]
     }
