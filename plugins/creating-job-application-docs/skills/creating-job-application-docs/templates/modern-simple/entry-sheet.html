@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>エントリーシート</title>
+<style>
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+  * {
+    box-sizing: border-box;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #eee;
+    font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, "Yu Gothic", "Noto Sans CJK JP", sans-serif;
+    color: #222;
+  }
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    padding: 18mm 16mm;
+    margin: 0 auto 5mm;
+    background: #fff;
+  }
+  .header {
+    display: table;
+    width: 100%;
+    margin-bottom: 6mm;
+  }
+  .header .left, .header .right {
+    display: table-cell;
+    vertical-align: bottom;
+  }
+  .header .right { text-align: right; font-size: 9.5pt; color: #555; }
+  .doc-title {
+    font-size: 22pt;
+    margin: 0;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+  }
+  .target-company {
+    font-size: 12pt;
+    margin: 2mm 0 8mm;
+    padding-left: 3mm;
+    border-left: 3px solid #333;
+  }
+  .basic-grid {
+    display: table;
+    width: 100%;
+    border-top: 1px solid #999;
+    border-bottom: 1px solid #999;
+    margin-bottom: 8mm;
+    font-size: 10pt;
+  }
+  .basic-grid .row { display: table-row; }
+  .basic-grid .label, .basic-grid .value {
+    display: table-cell;
+    padding: 2mm;
+    border-bottom: 1px solid #eee;
+    vertical-align: top;
+  }
+  .basic-grid .label {
+    width: 26mm;
+    color: #666;
+    font-size: 9pt;
+  }
+  .question-block {
+    margin-bottom: 7mm;
+    break-inside: avoid;
+  }
+  .question-title {
+    font-size: 11pt;
+    font-weight: 500;
+    margin-bottom: 1mm;
+  }
+  .question-meta {
+    font-size: 8.5pt;
+    color: #888;
+    margin-bottom: 2mm;
+  }
+  .answer-area {
+    border-top: 1px solid #ccc;
+    padding-top: 2mm;
+    font-size: 10pt;
+    line-height: 1.85;
+    white-space: pre-wrap;
+    min-height: 50mm;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <div class="left"><h1 class="doc-title">エントリーシート</h1></div>
+    <div class="right">{{提出日: 2026年5月10日}}</div>
+  </div>
+
+  <div class="target-company">{{応募企業名}} 御中</div>
+
+  <div class="basic-grid">
+    <div class="row">
+      <div class="label">氏名</div>
+      <div class="value">{{ふりがな}}<br>{{氏名}}</div>
+    </div>
+    <div class="row">
+      <div class="label">生年月日</div>
+      <div class="value">{{生年月日}}</div>
+    </div>
+    <div class="row">
+      <div class="label">大学</div>
+      <div class="value">{{大学・学部・学科}}（{{卒業/修了予定年月}}）</div>
+    </div>
+    <div class="row">
+      <div class="label">住所</div>
+      <div class="value">〒{{郵便番号}} {{現住所}}</div>
+    </div>
+    <div class="row">
+      <div class="label">連絡先</div>
+      <div class="value">{{電話番号}} ／ {{メールアドレス}}</div>
+    </div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-title">志望動機</div>
+    <div class="question-meta">{{文字数制限: 例 500字以内}}</div>
+    <div class="answer-area">{{志望動機本文}}</div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-title">学生時代に力を入れたこと</div>
+    <div class="question-meta">{{文字数制限: 例 500字以内}}</div>
+    <div class="answer-area">{{ガクチカ本文}}</div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-title">自己PR</div>
+    <div class="question-meta">{{文字数制限: 例 400字以内}}</div>
+    <div class="answer-area">{{自己PR本文}}</div>
+  </div>
+
+  <div class="question-block">
+    <div class="question-title">入社後にやりたいこと</div>
+    <div class="question-meta">{{文字数制限: 例 300字以内}}</div>
+    <div class="answer-area">{{入社後にやりたいこと本文}}</div>
+  </div>
+</div>
+</body>
+</html>

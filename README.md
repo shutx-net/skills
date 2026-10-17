@@ -11,6 +11,7 @@ Claude Code 用のスキル・プラグイン置き場。このリポジトリ�
 | --- | --- |
 | [`impl`](skills/impl/SKILL.md) | 実装タスクをフェーズ分割し、フェーズごとの計画JSONを書き出してから段階的に実装する |
 | [`commit-message`](skills/commit-message/SKILL.md) | git commitのメッセージを Conventional Commits 形式（`feat:` / `fix:` 等のプレフィックス）で書く |
+| [`creating-job-application-docs`](skills/creating-job-application-docs/SKILL.md) | 履歴書・職務経歴書・エントリーシートを、印刷・PDF化を前提とした HTML/CSS で作成する |
 
 ## インストール
 
@@ -53,6 +54,8 @@ skills/<name>/                    # ★ SSoT — 編集するのはここだけ
 .apm/skills/<name>/               # 生成物: APMパッケージ用
 plugins/<name>/skills/<name>/     # 生成物: Claude Codeプラグイン用
 
+evals/<name>/evals.json           # スキルの評価（配布物には含めない）
+
 apm.yml                           # APMパッケージマニフェスト
 .claude-plugin/marketplace.json   # Claude Code マーケットプレイス定義
 plugins/<name>/.claude-plugin/plugin.json
@@ -82,6 +85,12 @@ CIは `./scripts/sync-skills.sh --check` を実行し、生成先がSSoTと乖�
 ./scripts/lint-skills.sh          # マニフェスト・スキル規約の検証
 ./scripts/sync-skills.sh --check  # 生成先の乖離チェック
 ```
+
+### 評価（evals）
+
+スキルが期待どおりに動くかを確かめる評価は `evals/<name>/evals.json` に置きます。形式は Anthropic の skill-creator スキルの `evals.json` に合わせており、評価ごとにユーザーの依頼（`prompt`）と、結果が満たすべき条件（`expectations`）を持ちます。`skills/` の外に置くため、配布物には含まれません。
+
+スキルを変更したら、変更前のスキルと同じ評価を実行して結果を比べます。skill-creator を使えば、実行・採点・比較までをまとめて進められます。
 
 ### 新しいスキルを追加する
 
