@@ -127,9 +127,10 @@ agentskills validate skills/<name>   # コマンド名は agentskills
 1. `skills/<name>/SKILL.md` を作成（`name` はディレクトリ名と一致させる。名前は、ほかのスキルと同じ動名詞形（`writing-commit-messages` のような形）にする）
 2. `plugins/<name>/.claude-plugin/plugin.json` を作成（`name` / `version` / `description` / `author`。`author` は `--strict` 検証で必須）
 3. `.claude-plugin/marketplace.json` の `plugins` に `{"name": "<name>", "source": "./plugins/<name>"}` を追加
-4. `./scripts/sync-skills.sh` を実行してコミット
-5. このREADMEの「収録スキル」の表に1行追加する
+4. `apm.yml` の `description` がスキル集全体の説明になっているか見直し、`keywords` にそのプラグインの `keywords` を足す
+5. `./scripts/sync-skills.sh` を実行してコミット
+6. このREADMEの「収録スキル」の表に1行追加する
 
 2と3を忘れた場合は `lint-skills.sh` が具体的に何が足りないかを指摘して落ちるので、「配布したつもりで何も配られていない」状態にはなりません。
 
-スキルを削除・改名したときは、`sync-skills.sh` が対応するSSoTを失った生成先を検出して削除します（`--check` では取り残しとして報告）。プラグインのマニフェストとマーケットプレイスの登録は手動で消してください。
+スキルを削除・改名したときは、`sync-skills.sh` が対応するSSoTを失った生成先を検出して削除します（`--check` では取り残しとして報告）。プラグインのマニフェストとマーケットプレイスの登録は手動で消し、`apm.yml` の `description` と `keywords` も見直してください。
