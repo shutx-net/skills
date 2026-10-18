@@ -1,5 +1,5 @@
 name: shutx-skills
-version: "0.1.0"
+version: "0.2.0"
 description: フェーズ分割による段階的な実装、Conventional Commits 形式のコミットメッセージ、履歴書などの応募書類の HTML 作成のためのエージェントスキル集
 author:
   name: shutx
