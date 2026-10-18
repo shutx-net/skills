@@ -9,8 +9,8 @@ Claude Code 用のスキル・プラグイン置き場。このリポジトリ�
 
 | スキル | 概要 |
 | --- | --- |
-| [`impl`](skills/impl/SKILL.md) | 実装タスクをフェーズ分割し、フェーズごとの計画JSONを書き出してから段階的に実装する |
-| [`commit-message`](skills/commit-message/SKILL.md) | git commitのメッセージを Conventional Commits 形式（`feat:` / `fix:` 等のプレフィックス）で書く |
+| [`implementing-in-phases`](skills/implementing-in-phases/SKILL.md) | 実装タスクをフェーズ分割し、フェーズごとの計画JSONを書き出してから段階的に実装する |
+| [`writing-commit-messages`](skills/writing-commit-messages/SKILL.md) | git commitのメッセージを Conventional Commits 形式（`feat:` / `fix:` 等のプレフィックス）で書く |
 | [`creating-job-application-docs`](skills/creating-job-application-docs/SKILL.md) | 履歴書・職務経歴書・エントリーシートを、印刷・PDF化を前提とした HTML/CSS で作成する |
 
 ## インストール
@@ -42,6 +42,25 @@ apm install
 
 Claude Code では `.claude/skills/` に、Copilot / Cursor / OpenCode / Codex / Gemini では `.agents/skills/` にスキルが配備されます。
 
+### 旧名から移行する
+
+次のスキルは名前を変えました。
+
+| 旧名 | 新しい名前 |
+| --- | --- |
+| `impl` | `implementing-in-phases` |
+| `commit-message` | `writing-commit-messages` |
+
+- **Claude Code（プラグイン）**: マーケットプレイスを更新すると、旧名のプラグインは読み込めなくなります（`Plugin impl not found in marketplace shutx-skills`）。旧名のプラグインを削除し、新しい名前で入れ直してください:
+
+  ```
+  /plugin marketplace update shutx-skills
+  /plugin uninstall <旧名>@shutx-skills
+  /plugin install <新しい名前>@shutx-skills
+  ```
+
+- **APM**: `apm update` で依存を更新すると、新しい名前のスキルが配備され、旧名のスキルは削除されます。
+
 ## リポジトリ構成とスキル定義の同期
 
 スキル定義の**唯一の正（SSoT）は `skills/`** です。各配布チャネル向けのディレクトリは、そこから同期スクリプトで生成されます。
@@ -66,6 +85,8 @@ scripts/
 
 SKILL.mdは**自己完結**で、どちらのチャネル経由でも完全に同一の内容です。専用サブエージェントは同梱せず、実行環境にあるサブエージェント機構（あれば）を使い、無ければ自力実行にフォールバックします。これによりチャネル間で挙動が分岐しません。
 
+同じ理由で、frontmatter には Agent Skills 仕様にある項目（`name` / `description` / `license` / `compatibility` / `metadata` / `allowed-tools`）だけを使います。Claude Code 独自の項目（`argument-hint` / `when_to_use` 等）は、Claude Code の外では働かず、claude.ai へのアップロードではエラーになります。CI の skills-ref の検証で検出されます。
+
 ### スキルを編集するとき
 
 1. `skills/<name>/` を編集する（生成先を直接編集しない）
@@ -86,6 +107,13 @@ CIは `./scripts/sync-skills.sh --check` を実行し、生成先がSSoTと乖�
 ./scripts/sync-skills.sh --check  # 生成先の乖離チェック
 ```
 
+CIは、Agent Skills 仕様の検証ツール [skills-ref](https://github.com/agentskills/agentskills/tree/main/skills-ref) でも各スキルを検証します。手元で実行するには Python 3.11 以上が必要です:
+
+```bash
+pip install skills-ref==0.1.1
+agentskills validate skills/<name>   # コマンド名は agentskills
+```
+
 ### 評価（evals）
 
 スキルが期待どおりに動くかを確かめる評価は `evals/<name>/evals.json` に置きます。形式は Anthropic の skill-creator スキルの `evals.json` に合わせており、評価ごとにユーザーの依頼（`prompt`）と、結果が満たすべき条件（`expectations`）を持ちます。`skills/` の外に置くため、配布物には含まれません。
@@ -96,7 +124,7 @@ CIは `./scripts/sync-skills.sh --check` を実行し、生成先がSSoTと乖�
 
 `skills/<name>/SKILL.md` を作れば、同期スクリプトが自動で検出して各生成先に配ります（スクリプトの編集は不要です）。ただし配布するには、そのスキルのプラグインをマニフェストに登録する必要があります:
 
-1. `skills/<name>/SKILL.md` を作成（`name` はディレクトリ名と一致させる）
+1. `skills/<name>/SKILL.md` を作成（`name` はディレクトリ名と一致させる。名前は、ほかのスキルと同じ動名詞形（`writing-commit-messages` のような形）にする）
 2. `plugins/<name>/.claude-plugin/plugin.json` を作成（`name` / `version` / `description` / `author`。`author` は `--strict` 検証で必須）
 3. `.claude-plugin/marketplace.json` の `plugins` に `{"name": "<name>", "source": "./plugins/<name>"}` を追加
 4. `./scripts/sync-skills.sh` を実行してコミット

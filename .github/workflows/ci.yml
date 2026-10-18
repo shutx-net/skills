@@ -69,3 +69,26 @@ jobs:
 
       - name: Check generated skills are in sync with SSoT
         run: ./scripts/sync-skills.sh --check
+
+  skills-ref:
+    name: Validate skills against the Agent Skills spec
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # skills-ref は Agent Skills 仕様の検証ツール（コマンド名は agentskills）。
+      # 仕様にない frontmatter の項目（Claude Code 独自の argument-hint 等）があると落ちる
+      - name: Install skills-ref
+        run: pip install skills-ref==0.1.1
+
+      - name: Validate each skill
+        run: |
+          status=0
+          for dir in skills/*/; do
+            agentskills validate "$dir" || status=1
+          done
+          exit "$status"

@@ -1,9 +1,9 @@
 ---
-name: commit-message
+name: writing-commit-messages
 description: git commitのメッセージを Conventional Commits 形式で書き、変更の種類を feat / fix などの type プレフィックスで示す。コミットを作成するとき、コミットメッセージを書く・見直すときや、「コミットして」「コミットメッセージを考えて」等の依頼で使用する。
 ---
 
-# commit-message — Conventional Commits
+# writing-commit-messages — Conventional Commits
 
 コミットメッセージは [Conventional Commits 1.0.0](https://www.conventionalcommits.org/ja/v1.0.0/) に従い、1行目の先頭に変更の種類を表す **type** をプレフィックスとして付ける。type には、Conventional Commits が推奨する [@commitlint/config-conventional](https://github.com/conventional-changelog/commitlint/tree/master/%40commitlint/config-conventional)（Angular の規約に由来）の一覧を使う。
 
