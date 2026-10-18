@@ -1,6 +1,6 @@
 name: shutx-skills
-version: "0.1.0"
-description: フェーズ分割された探索・実装計画をJSONファイルとして書き出し、サブエージェントで段階的に実装するワークフロースキル集
+version: "0.2.0"
+description: フェーズ分割による段階的な実装、Conventional Commits 形式のコミットメッセージ、履歴書などの応募書類の HTML 作成のためのエージェントスキル集
 author:
   name: shutx
   url: https://github.com/shutx-net
@@ -12,3 +12,14 @@ keywords:
   - planning
   - subagent
   - workflow
+  - git
+  - commit
+  - commit-message
+  - conventional-commits
+  - job-application
+  - job-hunting
+  - resume
+  - rirekisho
+  - shokumu-keirekisho
+  - entry-sheet
+  - html

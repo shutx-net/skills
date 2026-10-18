@@ -1,7 +1,7 @@
 {
   "$schema": "https://code.claude.com/schemas/marketplace.json",
   "name": "shutx-skills",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "shutx's Claude Code skills and plugins",
   "owner": {
     "name": "shutx"
@@ -28,5 +28,9 @@
       "category": "productivity",
       "keywords": ["job-application", "job-hunting", "resume", "rirekisho", "shokumu-keirekisho", "entry-sheet", "html"]
     }
-  ]
+  ],
+  "renames": {
+    "impl": "implementing-in-phases",
+    "commit-message": "writing-commit-messages"
+  }
 }

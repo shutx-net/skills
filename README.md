@@ -51,11 +51,10 @@ Claude Code では `.claude/skills/` に、Copilot / Cursor / OpenCode / Codex /
 | `impl` | `implementing-in-phases` |
 | `commit-message` | `writing-commit-messages` |
 
-- **Claude Code（プラグイン）**: マーケットプレイスを更新すると、旧名のプラグインは読み込めなくなります（`Plugin impl not found in marketplace shutx-skills`）。旧名のプラグインを削除し、新しい名前で入れ直してください:
+- **Claude Code（プラグイン）**: マーケットプレイスを更新すると、旧名で有効にしていた設定は、`marketplace.json` の `renames` によって新しい名前に書き換わります。そのあと、新しい名前で一度インストールしてください（旧名の削除は不要です）:
 
   ```
   /plugin marketplace update shutx-skills
-  /plugin uninstall <旧名>@shutx-skills
   /plugin install <新しい名前>@shutx-skills
   ```
 
@@ -90,13 +89,14 @@ SKILL.mdは**自己完結**で、どちらのチャネル経由でも完全に�
 ### スキルを編集するとき
 
 1. `skills/<name>/` を編集する（生成先を直接編集しない）
-2. 同期する:
+2. `plugins/<name>/.claude-plugin/plugin.json` の `version` を上げる（修正はパッチ、機能の追加やふるまいの変更はマイナーを上げる）。Claude Code は `version` が変わるまで、インストール済みの利用者に更新を配りません
+3. 同期する:
 
 ```bash
 ./scripts/sync-skills.sh
 ```
 
-3. 生成物も含めてコミットする（配布時に取得されるのは生成先のファイルのため、リポジトリにコミットが必要です）
+4. 生成物も含めてコミットする（配布時に取得されるのは生成先のファイルのため、リポジトリにコミットが必要です）
 
 CIは `./scripts/sync-skills.sh --check` を実行し、生成先がSSoTと乖離していればビルドを落とします。
 
@@ -127,9 +127,12 @@ agentskills validate skills/<name>   # コマンド名は agentskills
 1. `skills/<name>/SKILL.md` を作成（`name` はディレクトリ名と一致させる。名前は、ほかのスキルと同じ動名詞形（`writing-commit-messages` のような形）にする）
 2. `plugins/<name>/.claude-plugin/plugin.json` を作成（`name` / `version` / `description` / `author`。`author` は `--strict` 検証で必須）
 3. `.claude-plugin/marketplace.json` の `plugins` に `{"name": "<name>", "source": "./plugins/<name>"}` を追加
-4. `./scripts/sync-skills.sh` を実行してコミット
-5. このREADMEの「収録スキル」の表に1行追加する
+4. `apm.yml` の `description` がスキル集全体の説明になっているか見直し、`keywords` にそのプラグインの `keywords` を足す
+5. `./scripts/sync-skills.sh` を実行してコミット
+6. このREADMEの「収録スキル」の表に1行追加する
 
 2と3を忘れた場合は `lint-skills.sh` が具体的に何が足りないかを指摘して落ちるので、「配布したつもりで何も配られていない」状態にはなりません。
 
-スキルを削除・改名したときは、`sync-skills.sh` が対応するSSoTを失った生成先を検出して削除します（`--check` では取り残しとして報告）。プラグインのマニフェストとマーケットプレイスの登録は手動で消してください。
+スキルを削除・改名したときは、`sync-skills.sh` が対応するSSoTを失った生成先を検出して削除します（`--check` では取り残しとして報告）。プラグインのマニフェストとマーケットプレイスの登録は手動で消し、`apm.yml` の `description` と `keywords` も見直してください。
+
+あわせて、`marketplace.json` の `renames` に旧名を足します（改名なら `"旧名": "新しい名前"`、削除なら `"旧名": null`）。インストール済みの利用者の設定が、新しい名前へ自動で移ります。`renames` は履歴なので、移行が済んでも消しません。
