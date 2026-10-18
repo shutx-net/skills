@@ -51,11 +51,10 @@ Claude Code では `.claude/skills/` に、Copilot / Cursor / OpenCode / Codex /
 | `impl` | `implementing-in-phases` |
 | `commit-message` | `writing-commit-messages` |
 
-- **Claude Code（プラグイン）**: マーケットプレイスを更新すると、旧名のプラグインは読み込めなくなります（`Plugin impl not found in marketplace shutx-skills`）。旧名のプラグインを削除し、新しい名前で入れ直してください:
+- **Claude Code（プラグイン）**: マーケットプレイスを更新すると、旧名で有効にしていた設定は、`marketplace.json` の `renames` によって新しい名前に書き換わります。そのあと、新しい名前で一度インストールしてください（旧名の削除は不要です）:
 
   ```
   /plugin marketplace update shutx-skills
-  /plugin uninstall <旧名>@shutx-skills
   /plugin install <新しい名前>@shutx-skills
   ```
 
@@ -135,3 +134,5 @@ agentskills validate skills/<name>   # コマンド名は agentskills
 2と3を忘れた場合は `lint-skills.sh` が具体的に何が足りないかを指摘して落ちるので、「配布したつもりで何も配られていない」状態にはなりません。
 
 スキルを削除・改名したときは、`sync-skills.sh` が対応するSSoTを失った生成先を検出して削除します（`--check` では取り残しとして報告）。プラグインのマニフェストとマーケットプレイスの登録は手動で消し、`apm.yml` の `description` と `keywords` も見直してください。
+
+あわせて、`marketplace.json` の `renames` に旧名を足します（改名なら `"旧名": "新しい名前"`、削除なら `"旧名": null`）。インストール済みの利用者の設定が、新しい名前へ自動で移ります。`renames` は履歴なので、移行が済んでも消しません。

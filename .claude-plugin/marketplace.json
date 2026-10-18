@@ -28,5 +28,9 @@
       "category": "productivity",
       "keywords": ["job-application", "job-hunting", "resume", "rirekisho", "shokumu-keirekisho", "entry-sheet", "html"]
     }
-  ]
+  ],
+  "renames": {
+    "impl": "implementing-in-phases",
+    "commit-message": "writing-commit-messages"
+  }
 }
