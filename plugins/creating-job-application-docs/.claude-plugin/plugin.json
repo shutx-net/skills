@@ -1,6 +1,6 @@
 {
   "name": "creating-job-application-docs",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "就職・転職活動の応募書類（履歴書・職務経歴書・エントリーシート）を、印刷・PDF化を前提とした HTML/CSS で作成する",
   "author": {
     "name": "shutx"
