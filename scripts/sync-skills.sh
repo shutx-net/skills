@@ -4,7 +4,7 @@
 # SSoT: skills/<name>/            — スキル定義の唯一の正
 # 生成先（スキル名から規約で導出する）:
 #   .apm/skills/<name>/           — APMパッケージ用
-#   plugins/<name>/skills/<name>/ — Claude Codeプラグイン用
+#   plugins/<name>/skills/<name>/ — Claude Code / Codexプラグイン共用
 #
 # skills/ 配下のディレクトリは自動で対象になる。スキルを増やすときに
 # このスクリプトを編集する必要はない（配布に必要なマニフェストの登録は

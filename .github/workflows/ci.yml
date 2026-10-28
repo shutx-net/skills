@@ -32,6 +32,25 @@ jobs:
           done
           exit "$status"
 
+  codex-plugin:
+    name: Validate and install Codex plugins
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Check Codex manifests and shared metadata
+        run: node scripts/check-codex-plugins.mjs
+
+      - name: Install Codex CLI
+        run: npm install -g @openai/codex@0.163.0
+
+      - name: Install each plugin and verify all packaged files
+        run: node scripts/check-codex-plugins.mjs --install
+
   apm-package:
     name: Validate APM package
     runs-on: ubuntu-latest

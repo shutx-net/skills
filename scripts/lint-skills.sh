@@ -11,6 +11,7 @@
 #   - SSoTの `LOAD references/...` の参照先が存在すること
 #   - 各スキルが配布チャネルに登録されていること（plugin.json / marketplace.json）
 #   - プラグインにエージェントを同梱していないこと（自己完結の担保）
+# CodexのJSON・登録内容・共通メタデータの詳細は check-codex-plugins.mjs が検証する。
 #
 # 使い方: ./scripts/lint-skills.sh
 #
@@ -53,7 +54,7 @@ fm_value() {
 }
 
 # --- マニフェスト ---
-for f in .claude-plugin/marketplace.json apm.yml; do
+for f in .claude-plugin/marketplace.json .agents/plugins/marketplace.json apm.yml; do
 	if [ ! -f "$f" ]; then
 		err "$f: ファイルがありません"
 	fi
@@ -145,6 +146,10 @@ for skill_dir in skills/*/; do
 	manifest="plugins/$skill_name/.claude-plugin/plugin.json"
 	if [ ! -f "$manifest" ]; then
 		err "$manifest がありません（スキル '$skill_name' のプラグインマニフェスト未作成）"
+	fi
+	manifest="plugins/$skill_name/plugin.json"
+	if [ ! -f "$manifest" ]; then
+		err "$manifest がありません（スキル '$skill_name' のCodex用プラグインマニフェスト未作成）"
 	fi
 
 	if [ -f .claude-plugin/marketplace.json ]; then

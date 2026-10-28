@@ -1,0 +1,24 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "implementing-in-phases",
+  "version": "0.1.0",
+  "description": "フェーズ分割された探索・実装計画をJSONファイルとして書き出し、サブエージェントで段階的に実装するワークフロー",
+  "author": {
+    "name": "shutx"
+  },
+  "keywords": ["implementation", "planning", "subagent", "workflow"],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Implementing in Phases",
+        "shortDescription": "実装をフェーズに分け、計画をJSONに書き出して段階的に進める",
+        "developerName": "shutx",
+        "category": "Productivity",
+        "websiteURL": "https://github.com/shutx-net/skills",
+        "defaultPrompt": ["実装タスクをフェーズに分け、計画をJSONに書き出してから進めてください。"],
+        "logo": "./assets/icon.svg",
+        "composerIcon": "./assets/icon.svg"
+      }
+    }
+  }
+}
