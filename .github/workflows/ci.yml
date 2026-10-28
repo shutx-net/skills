@@ -10,9 +10,9 @@ jobs:
     name: Validate Claude Code plugin
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
 
@@ -36,9 +36,9 @@ jobs:
     name: Validate and install Codex plugins
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
 
@@ -55,7 +55,7 @@ jobs:
     name: Validate APM package
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Set up APM CLI
         uses: microsoft/apm-action@v1
@@ -81,7 +81,7 @@ jobs:
     name: Lint skills
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Check manifests and skill constraints
         run: ./scripts/lint-skills.sh
@@ -93,9 +93,9 @@ jobs:
     name: Validate skills against the Agent Skills spec
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
