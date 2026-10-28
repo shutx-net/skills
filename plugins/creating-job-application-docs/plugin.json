@@ -1,0 +1,24 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "creating-job-application-docs",
+  "version": "0.2.0",
+  "description": "就職・転職活動の応募書類（履歴書・職務経歴書・エントリーシート）を、印刷・PDF化を前提とした HTML/CSS で作成する",
+  "author": {
+    "name": "shutx"
+  },
+  "keywords": ["job-application", "job-hunting", "resume", "rirekisho", "shokumu-keirekisho", "entry-sheet", "html"],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Creating Job Application Docs",
+        "shortDescription": "履歴書・職務経歴書・エントリーシートを印刷向けHTML/CSSで作成する",
+        "developerName": "shutx",
+        "category": "Productivity",
+        "websiteURL": "https://github.com/shutx-net/skills",
+        "defaultPrompt": ["応募書類を、印刷・PDF化に適したHTML/CSSで作成してください。"],
+        "logo": "./assets/icon.svg",
+        "composerIcon": "./assets/icon.svg"
+      }
+    }
+  }
+}

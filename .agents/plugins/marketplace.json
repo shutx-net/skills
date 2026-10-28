@@ -1,0 +1,44 @@
+{
+  "name": "shutx-skills",
+  "interface": {
+    "displayName": "shutx skills"
+  },
+  "plugins": [
+    {
+      "name": "implementing-in-phases",
+      "source": {
+        "source": "local",
+        "path": "./plugins/implementing-in-phases"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "writing-commit-messages",
+      "source": {
+        "source": "local",
+        "path": "./plugins/writing-commit-messages"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "creating-job-application-docs",
+      "source": {
+        "source": "local",
+        "path": "./plugins/creating-job-application-docs"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}
