@@ -16,6 +16,7 @@ plugins/<name>/skills/<name>/     # Generated: shared by Claude Code and Codex
 
 evals/<name>/evals.json           # Skill evaluations; excluded from packages
 
+LICENSE                          # Canonical license text for all packages
 apm.yml                           # APM package manifest
 .claude-plugin/marketplace.json   # Claude Code marketplace definition
 plugins/<name>/.claude-plugin/plugin.json
@@ -86,3 +87,7 @@ The `lint-skills.sh` and `check-codex-plugins.mjs` checks catch omissions in ste
 When a skill is removed or renamed, `sync-skills.sh` deletes generated directories whose source skill no longer exists. In `--check` mode, it reports them as stale instead. Remove the old plugin's manifests and icons, delete its entries from both marketplaces, and review the `description` and `keywords` in `apm.yml`.
 
 See the [Claude Code](CLAUDE_CODE.md#renaming-and-removing-skills) and [Codex CLI](CODEX_CLI.md#renaming-and-removing-skills) guides for migration settings and instructions.
+
+## License synchronization
+
+The root `LICENSE` is the source of truth for the license text. The synchronization script includes a copy in each generated skill directory, so it travels with both plugin and APM installations. Edit only the root file, then run `./scripts/sync-skills.sh`. The `--check` command also verifies that every generated copy matches it.

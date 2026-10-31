@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "implementing-in-phases",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "フェーズ分割された探索・実装計画をJSONファイルとして書き出し、サブエージェントで段階的に実装するワークフロー",
   "author": {
     "name": "shutx"
