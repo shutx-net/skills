@@ -1,27 +1,26 @@
-# PDF 化を見据えた安全な CSS ガイドライン
+# Print-safe CSS
 
-このスキルで生成する HTML は、最終的にブラウザの印刷機能等で PDF へ変換される前提である。
-以下のルールに従い、PDF 出力時に崩れない CSS を書く。
+Documents created by this skill are intended to be saved as PDF through the browser's print dialog. Follow these rules to preserve their layout when printed.
 
-## 目次
+## Contents
 
-1. ページサイズの指定
-2. 単位の指針
-3. 改ページ制御
-4. 禁止する CSS / HTML
-5. フォント指針
-6. 色の指針
-7. 画像
-8. テスト方法（ユーザー向け案内）
-9. チェックリスト
+1. Page size
+2. Units
+3. Page breaks
+4. Disallowed CSS and HTML
+5. Fonts
+6. Colors
+7. Images
+8. Previewing the result
+9. Checklist
 
-## 1. ページサイズの指定
+## 1. Page size
 
-`@page` ルールでページサイズを明示し、余白は `@page` の `margin` ではなく `.page` の `padding` で取る（テンプレートと同じ方式）。
+Set the paper size explicitly with `@page`. Use `.page` padding for margins, rather than `@page margin`, as the templates do.
 
 ```css
 @page {
-  size: A4 portrait;         /* または: JIS-B5 portrait, letter portrait */
+  size: A4 portrait;         /* Alternatives: JIS-B5 portrait, letter portrait */
   margin: 0;
 }
 
@@ -36,92 +35,94 @@ html, body {
 }
 
 .page {
-  width: 210mm;              /* A4 縦の幅 */
-  min-height: 297mm;         /* A4 縦の高さ */
-  padding: 15mm;             /* 余白 */
+  width: 210mm;              /* A4 portrait width */
+  min-height: 297mm;         /* A4 portrait height */
+  padding: 15mm;             /* Page margins */
   margin: 0 auto;
   background: #fff;
   -webkit-box-decoration-break: clone;
-  box-decoration-break: clone;  /* 改ページしたどのページにも padding を付ける（3. 改ページ制御） */
+  box-decoration-break: clone;  /* Repeat padding on every printed page; see section 3 */
 }
 
-/* 画面で見るときだけ、用紙の外を灰色にする（6. 色の指針） */
+/* Gray surrounds the paper only on screen; see section 6 */
 @media screen {
   html, body { background: #ddd; }
   .page { margin-bottom: 5mm; }
 }
 ```
 
-- `@page` の `margin` と `.page` の `padding` を併用しない。余白が二重になるうえ、`.page` が印刷できる範囲より広くなるため、ブラウザが内容を縮小して印刷する（Chrome で A4・両方 15mm の場合、約86%に縮小され、余白は約28mmになる）
-- 日本の書類で B5 といえば JIS B5（182 × 257mm）を指す。CSS の `size: B5` は ISO B5（176 × 250mm）になるため、`size: JIS-B5` を使う
-- 横向きは履歴書の見開きだけで使う（A4 の2枚組なら `A3 landscape`）。作り方は rirekisho-fields.md の「横向き（見開き）」にある
+- Do not combine `@page margin` with `.page padding`. This doubles the margins and makes `.page` wider than the printable area, causing the browser to shrink the content. In Chrome, using 15 mm for both on A4 reduces content to about 86% and produces margins of about 28 mm.
+- For Japanese documents, B5 means JIS B5 (182 × 257 mm). CSS `size: B5` selects ISO B5 (176 × 250 mm), so use `size: JIS-B5`.
+- Use landscape orientation only for a rirekisho spread, such as `A3 landscape` for two A4 sheets. See "Landscape spreads" in rirekisho-fields.md.
 
-## 2. 単位の指針
+## 2. Units
 
-| 用途 | 推奨単位 | 禁止単位 |
-|------|---------|---------|
-| ページ寸法・余白 | `mm` `cm` `pt` | `vh` `vw` `vmin` `vmax` |
-| フォントサイズ | `pt` `mm` | `vh` `vw` |
-| 行間・余白 | `mm` `em` `pt` | `vh` `vw` |
+| Purpose | Recommended | Do not use |
+| --- | --- | --- |
+| Paper dimensions and margins | `mm`, `cm`, `pt` | `vh`, `vw`, `vmin`, `vmax` |
+| Font size | `pt`, `mm` | `vh`, `vw` |
+| Line spacing and other spacing | `mm`, `em`, `pt` | `vh`, `vw` |
 
-ビューポート単位（`vh` `vw` 等）は印刷時にブラウザによって解釈が異なるため、**絶対に使用しない** こと。
+**Never use viewport units** such as `vh` or `vw`. Browsers interpret them inconsistently when printing.
 
-## 3. 改ページ制御
+## 3. Page breaks
 
-`.page` の内容が用紙1枚を超えると、ブラウザが自動で次の用紙へ送る。`.page` に `box-decoration-break: clone` を指定していれば、どのページにも `.page` の padding が余白として付く。指定がないと、2枚目以降は上下の余白がなくなる。Safari は `box-decoration-break` への対応が一部にとどまり、2枚目以降に余白が付かないことがある。
+When a `.page` element outgrows one sheet, the browser continues it on the next. With `box-decoration-break: clone`, each printed fragment receives the element's padding. Without it, later pages lose their top and bottom margins. Safari only partially supports this property, so later pages may still lose their margins.
 
-- **職務経歴書・エントリーシート**: 1つの `.page` に書き、改ページはブラウザに任せる
-- **履歴書**: 2枚組の様式なので、用紙1枚ごとに `.page` を分け、2枚目の前で改ページする（1枚に入る量の目安は rirekisho-fields.md にある）
+- **Career histories and entry sheets:** use one `.page` element and let the browser handle pagination.
+- **Rirekisho:** use two `.page` elements, one per sheet, and force a page break before the second. See the page capacity guidelines in rirekisho-fields.md.
 
 ```css
 .page + .page {
-  break-before: page;        /* 2つ目以降の .page は新しい用紙から始める */
+  break-before: page;        /* Start each subsequent .page on a new sheet */
 }
 
 .no-break,
 .company-block,
 .question-block {
-  break-inside: avoid;       /* まとまりの途中で改ページしない */
+  break-inside: avoid;       /* Keep each block together */
 }
 
 tr {
-  break-inside: avoid;       /* 表の行の途中で改ページしない */
+  break-inside: avoid;       /* Keep table rows together */
 }
 
 .section-title {
-  break-after: avoid;        /* 見出しだけがページの末尾に残らないようにする */
+  break-after: avoid;        /* Keep headings with the content that follows */
 }
 ```
 
-- `break-inside: avoid` は、会社ブロックや設問のような1ページに収まる大きさのまとまりに付ける。セクション全体のような大きなまとまりに付けると、収まらないときに丸ごと次のページへ送られ、前のページに大きな空白が残る
-- 改ページで表が分かれても見出し行が繰り返されるよう、見出し行は `<thead>` に入れる
+- Apply `break-inside: avoid` to blocks that can fit on one page, such as an employer block or a question. Applying it to an entire large section can push the whole section onto the next page and leave a large gap.
+- Put table headings in `<thead>` so they repeat when a table spans multiple pages.
 
-## 4. 禁止する CSS / HTML
+## 4. Disallowed CSS and HTML
 
 ### CSS
-- `position: fixed`、`position: sticky`（PDF で位置がずれる）
-- `transform`（一部レンダラで崩れる）
-- `transition` / `animation` / `@keyframes`（PDF では無意味）
-- `:hover` / `:focus` / `:active` の視覚変化
-- `box-shadow` の多用（印刷時に色が変わる場合あり）
-- `filter`（blur 等）
+
+- `position: fixed` and `position: sticky`, which can shift when saved as PDF
+- `transform`, which some renderers handle poorly
+- `transition`, `animation`, and `@keyframes`, which have no useful role in a PDF
+- Visual changes triggered by `:hover`, `:focus`, or `:active`
+- Heavy use of `box-shadow`, which can print with different colors
+- `filter`, including blur
 - `backdrop-filter`
-- ダークモード対応の `prefers-color-scheme`
-- グラデーションの多用（印刷時に階調が崩れやすい）
+- Dark mode through `prefers-color-scheme`
+- Heavy use of gradients, which can lose tonal detail when printed
 
 ### HTML
-- `<script>` タグ
-- `<form>` `<input>` `<button>` `<select>` `<textarea>`（インタラクティブ要素）
-- `<video>` `<audio>` `<canvas>` `<iframe>`
-- `<a href="...">`（クリック前提のリンク。テキスト表示のみにする）
-- `<details>` `<summary>`（折りたたみ要素）
-- 外部 CSS 読み込み（`<link rel="stylesheet" href="...">`）
-- 外部 JS 読み込み
-- CDN 経由のフォント・アイコン（オフライン環境で崩れる）
 
-## 5. フォント指針
+- `<script>` tags
+- Interactive controls: `<form>`, `<input>`, `<button>`, `<select>`, and `<textarea>`
+- `<video>`, `<audio>`, `<canvas>`, and `<iframe>`
+- Clickable `<a href="...">` links; display their text instead
+- Collapsible `<details>` and `<summary>` elements
+- External stylesheets such as `<link rel="stylesheet" href="...">`
+- External JavaScript
+- Fonts or icons loaded from a CDN, which fail offline
 
-Web フォントの参照は避け、システムフォントを使う。
+## 5. Fonts
+
+Use system fonts instead of web fonts.
 
 ```css
 body {
@@ -138,7 +139,7 @@ body {
 }
 ```
 
-明朝体を使う場合：
+For a Mincho-style serif font:
 
 ```css
 font-family:
@@ -149,13 +150,13 @@ font-family:
   serif;
 ```
 
-## 6. 色の指針
+## 6. Colors
 
-- 黒文字基調（`#000` または `#222`）
-- 装飾色は印刷でも視認できる濃度を選ぶ
-- 背景に薄いグレーを使う場合は `#f5f5f5` 程度に留める
-- `print-color-adjust: exact;`（必要時のみ・色付き背景を確実に出すため）
-- 画面確認用の背景色（用紙の外の灰色）は `@media screen` の中に書く。`print-color-adjust: exact` を指定しているため、外に書くと最後のページの余った部分などに灰色が印刷される
+- Use black or near-black text, such as `#000` or `#222`.
+- Choose accent colors that remain legible in print.
+- Keep light gray backgrounds around `#f5f5f5`.
+- Use `print-color-adjust: exact;` when needed to preserve background colors.
+- Put the gray background surrounding the on-screen paper inside `@media screen`. Because the templates use `print-color-adjust: exact`, a background outside that rule can also print in unused areas, such as the end of the last page.
 
 ```css
 * {
@@ -164,31 +165,33 @@ font-family:
 }
 ```
 
-## 7. 画像
+## 7. Images
 
-- 画像を使う場合は base64 埋め込み、もしくはファイルと同階層のローカル相対パス
-- `<img>` の幅・高さを `mm` で指定すると印刷ズレを防げる
+- Embed images as base64 data or use a local relative path in the same directory as the document.
+- Specify `<img>` width and height in `mm` to avoid shifts in print.
 
-## 8. テスト方法（ユーザー向け案内）
+## 8. Previewing the result
 
-1. 出力された HTML をブラウザで開く
-2. ブラウザの「印刷」→「PDFとして保存」で確認
-3. 余白・改ページ・フォントを確認
+Ask the user to:
 
-## 9. チェックリスト
+1. Open the generated HTML in a browser.
+2. Choose Print, then Save as PDF.
+3. Check margins, page breaks, and fonts.
 
-書類を生成したら、以下を満たしているか確認する。
+## 9. Checklist
 
-- [ ] `@page size` を指定している
-- [ ] `@page` の `margin` と `.page` の `padding` を併用していない
-- [ ] `.page` に `box-decoration-break: clone` を指定している
-- [ ] 画面確認用の背景色・余白を `@media screen` の中に書いている
-- [ ] `.page` に mm で用紙の実寸を指定している
-- [ ] `<script>` タグがない
-- [ ] インタラクティブ要素（form/button/input 等）がない
-- [ ] 外部リソース参照（CDN/外部CSS）がない
-- [ ] viewport 単位を使っていない
-- [ ] `position: fixed` `sticky` を使っていない
-- [ ] アニメーション関連プロパティがない
-- [ ] フォントはシステムフォント指定
-- [ ] CSS は `<style>` 内に同梱
+After generating a document, verify that:
+
+- [ ] `@page size` is set.
+- [ ] `@page margin` and `.page padding` are not combined.
+- [ ] `.page` has `box-decoration-break: clone`.
+- [ ] Screen-only backgrounds and spacing are inside `@media screen`.
+- [ ] `.page` uses the paper's actual dimensions in mm.
+- [ ] There are no `<script>` tags.
+- [ ] There are no interactive elements such as forms, buttons, or inputs.
+- [ ] There are no external resources such as CDNs or stylesheets.
+- [ ] No viewport units are used.
+- [ ] Neither `position: fixed` nor `position: sticky` is used.
+- [ ] There are no animation properties.
+- [ ] Fonts come from the system font stack.
+- [ ] All CSS is included in a `<style>` element.

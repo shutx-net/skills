@@ -53,7 +53,7 @@ sync_one() {
 	rm -rf "$_dst"
 	mkdir -p "$(dirname "$_dst")"
 	cp -R "$_src" "$_dst"
-	printf '<!-- このディレクトリは skills/%s/ から生成されています。直接編集せず、skills/%s/ を編集して `./scripts/sync-skills.sh` を実行してください。 -->\n' \
+	printf '<!-- Generated from skills/%s/. Do not edit this directory directly. Edit skills/%s/ and run `./scripts/sync-skills.sh`. -->\n' \
 		"$_name" "$_name" >"$_dst/GENERATED.md"
 }
 

@@ -1,43 +1,43 @@
-# 計画JSONスキーマ
+# Plan JSON schema
 
-implementing-in-phases スキルの計画立案工程が書き出すJSONファイルの形式。
+JSON files written during the planning stage of the implementing-in-phases skill.
 
-## plan-index.json（全体索引）
+## plan-index.json (overall index)
 
 ```json
 {
-  "task": "タスクの1行要約",
-  "effort": "決定したeffortレベル",
+  "task": "One-line summary of the task",
+  "effort": "Selected effort level",
   "createdAt": "ISO8601",
   "phases": [
-    { "id": 1, "file": "phase-01.json", "title": "フェーズ名", "dependsOn": [] },
-    { "id": 2, "file": "phase-02.json", "title": "フェーズ名", "dependsOn": [1] }
+    { "id": 1, "file": "phase-01.json", "title": "Phase title", "dependsOn": [] },
+    { "id": 2, "file": "phase-02.json", "title": "Phase title", "dependsOn": [1] }
   ]
 }
 ```
 
-## phase-NN.json（各フェーズ）
+## phase-NN.json (individual phase)
 
 ```json
 {
   "id": 1,
-  "title": "フェーズ名",
-  "goal": "このフェーズで達成すること（1〜2文）",
+  "title": "Phase title",
+  "goal": "What this phase should accomplish, in one or two sentences",
   "dependsOn": [],
-  "contextFiles": ["実装前に読むべきファイルパス（最小限）"],
+  "contextFiles": ["Paths to read before implementation; keep this list minimal"],
   "steps": [
     {
-      "file": "変更対象ファイルの相対パス",
+      "file": "Relative path to the file being changed",
       "action": "create | modify | delete",
-      "detail": "何をどう変更するかの具体的な説明。必要なら短いコード断片や関数シグネチャを含める"
+      "detail": "Describe the change precisely. Include a short code snippet or function signature when useful."
     }
   ],
-  "verification": ["このフェーズ完了を確認するコマンドや手順（例: npm test -- path/to/test）"],
-  "notes": "実装者への注意点（既存の慣習、落とし穴など）。不要なら省略"
+  "verification": ["Commands or steps that verify this phase, such as npm test -- path/to/test"],
+  "notes": "Conventions, pitfalls, or other guidance for the implementer. Omit if unnecessary."
 }
 ```
 
-## サイズの目安
+## Size guidelines
 
-- 1ファイルあたり最大でも約8KB / `steps` は10個以内
-- 超えそうな場合はフェーズをさらに分割する
+- Keep each file within roughly 8 KB and limit `steps` to 10 entries.
+- Split the phase further if it would exceed either guideline.

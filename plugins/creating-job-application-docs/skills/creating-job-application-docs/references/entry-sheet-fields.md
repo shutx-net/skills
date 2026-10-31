@@ -1,73 +1,72 @@
-# エントリーシート (Entry Sheet) の記載項目
+# Entry sheet fields
 
-新卒採用などで企業独自のフォーマットで提出されることが多い書類。
-このスキルでは汎用フォーマットを提供する。
+An entry sheet is an application form commonly used in graduate recruitment. Employers often supply their own format; this skill provides a general-purpose layout.
 
-「必須」列: ◯ = 必須、△ = 任意
+In the Required column, ◯ means required and △ means optional.
 
-## 1. ヘッダー
+## 1. Header
 
-| 項目 | 必須 | 例 |
-|-----------|-----|-----|
-| 書類タイトル | ◯ | 「エントリーシート」 |
-| 応募企業名 | ◯ | 株式会社○○ 御中 |
-| 応募職種 | △ | 総合職 / エンジニア職 |
-| 提出日 | ◯ | 2026年5月10日 |
+| Field | Required | Example |
+| --- | --- | --- |
+| Document title | ◯ | `エントリーシート` |
+| Employer | ◯ | `株式会社○○ 御中` |
+| Target role | △ | Generalist or engineering role |
+| Submission date | ◯ | May 10, 2026 |
 
-## 2. 基本情報
+## 2. Personal information
 
-| 項目 | 必須 |
-|-----------|-----|
-| 氏名（漢字） | ◯ |
-| 氏名（ふりがな） | ◯ |
-| 生年月日 | ◯ |
-| 大学・学部・学科 | ◯ |
-| 卒業/修了予定年月 | ◯ |
-| 連絡先（メール・電話） | ◯ |
-| 写真欄 | △ |
+| Field | Required |
+| --- | --- |
+| Full name in kanji | ◯ |
+| Name reading (furigana) | ◯ |
+| Date of birth | ◯ |
+| University, faculty, and department | ◯ |
+| Expected graduation or completion date | ◯ |
+| Contact details: email and phone | ◯ |
+| Photo area | △ |
 
-## 3. 設問（自由設問）
+## 3. Application questions
 
-エントリーシートのコアとなる部分。よくある設問例：
+These questions form the main part of an entry sheet. Common examples include:
 
-| 設問 | 想定文字数 |
-|------|----------|
-| 志望動機 | 300〜600字 |
-| 学生時代に力を入れたこと（ガクチカ） | 300〜600字 |
-| 自己PR | 300〜600字 |
-| 入社後にやりたいこと | 200〜400字 |
-| 長所・短所 | 100〜300字 |
-| 趣味・特技 | 50〜200字 |
+| Topic | Typical Japanese character count |
+| --- | --- |
+| Reasons for applying | 300–600 |
+| A student activity or project the applicant focused on most (gakuchika) | 300–600 |
+| Personal strengths | 300–600 |
+| What the applicant wants to do after joining | 200–400 |
+| Strengths and weaknesses | 100–300 |
+| Hobbies and special skills | 50–200 |
 
-各設問は **「設問テキスト + 文字数制限 + 回答欄」** で構成。
+Each question consists of **the prompt, a character limit, and an answer area**.
 
-## 4. その他
+## 4. Other information
 
-- 資格・スキル
-- 学業以外の活動（ゼミ、サークル、アルバイト、インターン）
-- 留学経験
-- 研究テーマ
+- Qualifications and skills
+- Activities such as seminars, clubs, part-time work, and internships
+- Study abroad
+- Research topic
 
 ---
 
-## レイアウト指針
+## Layout guidelines
 
-- **A4 縦** が標準。設問が多ければ自動で改ページされる
-- 写真欄は右上（30mm × 40mm）
-- 各設問のブロックを明確に区切る
-- 設問は太字、文字数制限は薄いグレーで併記
-- 回答欄の高さは想定文字数から逆算（例：400字なら 60mm 程度）
-- 改ページは設問の途中で起きないよう `break-inside: avoid`
-- 余白は左右 15mm 程度を確保
+- Use **A4 portrait** by default. Additional questions flow automatically onto new pages.
+- Place the photo area at the top right, at 30 mm × 40 mm.
+- Clearly separate each question block.
+- Set questions in bold and show character limits alongside them in light gray.
+- Size answer areas for the expected character count; for example, allow about 60 mm for 400 Japanese characters.
+- Apply `break-inside: avoid` to keep each question together.
+- Allow about 15 mm of space on the left and right.
 
-## 必須ヒアリング項目
+## Required information
 
-1. 氏名・基本情報
-2. 応募企業名・職種
-3. 設問内容（企業ごとに異なるため必ず確認）
-4. 各設問の文字数制限
-5. 各設問への回答内容
-6. 学歴・学業情報
-7. その他添付情報（資格・課外活動等）
+1. Full name and personal details
+2. Employer and target role
+3. Exact application questions; always confirm these because they vary by employer
+4. Character limit for each question
+5. Answer to each question
+6. Education and academic background
+7. Other information to include, such as qualifications and extracurricular activities
 
-特に **設問内容と文字数** はユーザー指定が必須。
+The user must supply **the questions and their character limits**.

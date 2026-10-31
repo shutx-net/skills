@@ -1,86 +1,88 @@
-# 職務経歴書 (Shokumu Keirekisho) の記載項目
+# Shokumu-keirekisho fields
 
-「必須」列: ◯ = 必須、△ = 任意
+Fields for a Japanese career history document (shokumu-keirekisho).
 
-## 1. ヘッダー
+In the Required column, ◯ means required and △ means optional.
 
-| 項目 | 必須 | 例 |
-|-----------|-----|-----|
-| 書類タイトル | ◯ | 「職務経歴書」 |
-| 作成日 | ◯ | 2026年5月10日 |
-| 氏名 | ◯ | 右上に記載することが多い |
+## 1. Header
 
-## 2. 職務要約
+| Field | Required | Example or guidance |
+| --- | --- | --- |
+| Document title | ◯ | `職務経歴書` |
+| Date prepared | ◯ | May 10, 2026 |
+| Full name | ◯ | Usually placed at the top right |
 
-300〜400 字程度のサマリー。これまでのキャリアと強みを 1 段落で記述。
+## 2. Career summary
 
-## 3. 職務経歴詳細
+Write one paragraph of about 300–400 Japanese characters, summarizing the applicant's career and strengths.
 
-会社ごとにブロックを分け、新しい順に記載。
+## 3. Detailed employment history
 
-### 各社のブロック構成
+Use a separate block for each employer, starting with the most recent.
 
-| 項目 | 必須 | 備考 |
-|-----------|-----|-----|
-| 在籍期間 | ◯ | 2020年4月 〜 2024年3月 |
-| 会社名 | ◯ | 株式会社○○ |
-| 事業内容 | ◯ | ソフトウェア開発 |
-| 資本金 | △ | 1億円 |
-| 売上高 | △ | 50億円 |
-| 従業員数 | △ | 200名 |
-| 上場区分 | △ | 東証プライム / 非上場 |
-| 雇用形態 | △ | 正社員 / 契約社員 |
+### Employer details
 
-### プロジェクト/業務詳細
+| Field | Required | Example |
+| --- | --- | --- |
+| Employment dates | ◯ | April 2020–March 2024 |
+| Company name | ◯ | Example Co., Ltd. |
+| Business | ◯ | Software development |
+| Capital | △ | JPY 100 million |
+| Revenue | △ | JPY 5 billion |
+| Number of employees | △ | 200 |
+| Listing status | △ | TSE Prime Market or unlisted |
+| Employment type | △ | Permanent or fixed-term employee |
 
-各社内で複数のプロジェクトをテーブル形式で記載。
+### Projects and responsibilities
 
-| 期間 | プロジェクト | 役割 | 規模 | 環境 | 業務内容 |
-|------|------------|------|------|------|---------|
-| 2022/04〜2023/03 | ECサイト刷新 | リーダー | 10名 | TypeScript, React, AWS | 要件定義〜実装〜運用 |
+List projects in a table within each employer's block.
 
-## 4. 保有スキル
+| Period | Project | Role | Team size | Technologies | Responsibilities |
+| --- | --- | --- | --- | --- | --- |
+| 2022/04–2023/03 | E-commerce site rebuild | Team lead | 10 | TypeScript, React, AWS | Requirements, implementation, and operations |
 
-| カテゴリ | 内容 |
-|---------|------|
-| 言語 | TypeScript, Python, Go |
-| フレームワーク | React, Next.js, FastAPI |
-| クラウド | AWS, GCP |
-| データベース | PostgreSQL, MySQL, Redis |
-| ツール | Git, Docker, Terraform |
+## 4. Technical skills
 
-## 5. 資格・認定
+| Category | Examples |
+| --- | --- |
+| Languages | TypeScript, Python, Go |
+| Frameworks | React, Next.js, FastAPI |
+| Cloud | AWS, GCP |
+| Databases | PostgreSQL, MySQL, Redis |
+| Tools | Git, Docker, Terraform |
 
-| 取得年月 | 資格名 |
-|---------|--------|
-| 2023年6月 | AWS Certified Solutions Architect - Associate |
+## 5. Qualifications and certifications
 
-## 6. 自己PR
+| Date obtained | Qualification |
+| --- | --- |
+| June 2023 | AWS Certified Solutions Architect – Associate |
 
-200〜400 字程度。職務要約とは異なり、強み・人物像にフォーカス。
+## 6. Personal strengths
 
-## 7. 活かせる経験・知識・スキル
+Use about 200–400 Japanese characters. Focus on strengths and personal qualities rather than repeating the career summary.
 
-応募職種に対し、自身の経歴で活かせる点を箇条書き。
+## 7. Relevant experience, knowledge, and skills
+
+Use bullet points to show how the applicant's experience relates to the target role.
 
 ---
 
-## レイアウト指針
+## Layout guidelines
 
-- **A4 縦** が標準。経歴が多ければ自動で改ページされ、複数ページになる
-- 作成日と氏名は1ページ目の右上に書く（改ページの位置は内容で変わるため、2ページ目以降にはヘッダーを付けない）
-- セクション見出しは罫線下線で強調
-- 業務詳細は **テーブル形式** が読みやすい
-- 会社ブロックの途中で改ページしないよう、`break-inside: avoid` を付ける
+- Use **A4 portrait** by default. Longer histories flow automatically onto additional pages.
+- Put the date and name at the top right of the first page. Do not repeat this header on later pages, because page breaks depend on the content.
+- Emphasize section headings with an underline or bottom border.
+- Use **tables** for project and responsibility details.
+- Apply `break-inside: avoid` to keep an employer's block together.
 
-## 必須ヒアリング項目
+## Required information
 
-1. 氏名
-2. 職務要約
-3. 各社の在籍期間・会社名・事業内容・規模
-4. 担当プロジェクト・業務内容・役割
-5. 使用技術
-6. 保有スキル
-7. 資格・認定
-8. 自己PR
-9. 活かせる経験
+1. Full name
+2. Career summary
+3. Employment dates, company name, business, and company size for each employer
+4. Projects, responsibilities, and roles
+5. Technologies used
+6. Technical skills
+7. Qualifications and certifications
+8. Personal strengths
+9. Relevant experience
