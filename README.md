@@ -23,3 +23,7 @@ See the guide for your preferred distribution method.
 ## Developing skills
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the repository layout and instructions for adding, editing, syncing, validating, and evaluating skills.
+
+## License
+
+Licensed under the [MIT License](LICENSE).

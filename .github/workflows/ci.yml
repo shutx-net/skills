@@ -65,13 +65,17 @@ jobs:
       - name: Validate manifest and resolve package
         run: apm install --target claude
 
-      - name: Verify skill deployment
+      - name: Verify skill and license deployment
         run: |
           status=0
           for dir in skills/*/; do
             name=$(basename "$dir")
             if [ ! -f ".claude/skills/$name/SKILL.md" ]; then
               echo "::error::スキル '$name' が .claude/skills/ に配備されていません"
+              status=1
+            fi
+            if ! cmp -s LICENSE ".claude/skills/$name/LICENSE"; then
+              echo "::error::License for skill '$name' is missing or differs from the repository LICENSE"
               status=1
             fi
           done

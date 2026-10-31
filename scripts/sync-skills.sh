@@ -14,7 +14,7 @@
 #   ./scripts/sync-skills.sh           # 生成先を同期（書き込み）
 #   ./scripts/sync-skills.sh --check   # 差分があれば非ゼロ終了（CI用）
 #
-# 依存: POSIX sh と coreutils（cp / rm / diff / mkdir / sed）のみ。
+# 依存: POSIX sh と coreutils（cp / rm / diff / mkdir / mktemp / sed）のみ。
 
 set -eu
 
@@ -53,6 +53,7 @@ sync_one() {
 	rm -rf "$_dst"
 	mkdir -p "$(dirname "$_dst")"
 	cp -R "$_src" "$_dst"
+	cp "$ROOT/LICENSE" "$_dst/LICENSE"
 	printf '<!-- Generated from skills/%s/. Do not edit this directory directly. Edit skills/%s/ and run `./scripts/sync-skills.sh`. -->\n' \
 		"$_name" "$_name" >"$_dst/GENERATED.md"
 }
@@ -89,12 +90,28 @@ if [ -z "$names" ]; then
 	exit 1
 fi
 
+if [ ! -f "$ROOT/LICENSE" ]; then
+	printf 'Error: the repository LICENSE is missing.\n' >&2
+	exit 1
+fi
+
+if [ "$CHECK" -eq 1 ]; then
+	check_root=$(mktemp -d)
+	trap 'rm -rf "$check_root"' EXIT HUP INT TERM
+fi
+
 drift=0
 for name in $names; do
 	src="skills/$name"
+	if [ "$CHECK" -eq 1 ]; then
+		# Compare the complete package, including the license from the repository root.
+		check_src="$check_root/$name"
+		cp -R "$src" "$check_src"
+		cp "$ROOT/LICENSE" "$check_src/LICENSE"
+	fi
 	for rel in $(targets_for "$name"); do
 		if [ "$CHECK" -eq 1 ]; then
-			check_one "$src" "$rel" || drift=1
+			check_one "$check_src" "$rel" || drift=1
 		else
 			sync_one "$src" "$rel" "$name"
 			printf '同期: %s -> %s\n' "$src" "$rel"
