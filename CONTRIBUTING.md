@@ -1,88 +1,88 @@
-# コントリビューションガイド
+# Contributing
 
-[READMEに戻る](README.md)
+[Back to README](README.md)
 
-## リポジトリ構成とスキル定義の同期
+## Repository layout and skill synchronization
 
-スキル定義の**唯一の正（SSoT）は `skills/`** です。各配布チャネル向けのディレクトリは、そこから同期スクリプトで生成されます。
+**`skills/` is the source of truth.** The synchronization script copies its contents into the directories used by each distribution channel.
 
 ```text
-skills/<name>/                    # ★ SSoT — 編集するのはここだけ
-├── SKILL.md                      #   スキル本体（自己完結）
-└── references/                   #   本文からLOADする補助ドキュメント
+skills/<name>/                    # Source of truth; edit skills here
+├── SKILL.md                      # Self-contained skill instructions
+└── references/                   # Supporting documents loaded by the skill
 
-.apm/skills/<name>/               # 生成物: APMパッケージ用
-plugins/<name>/skills/<name>/     # 生成物: Claude Code / Codexプラグイン共用
+.apm/skills/<name>/               # Generated: APM package
+plugins/<name>/skills/<name>/     # Generated: shared by Claude Code and Codex
 
-evals/<name>/evals.json           # スキルの評価（配布物には含めない）
+evals/<name>/evals.json           # Skill evaluations; excluded from packages
 
-apm.yml                           # APMパッケージマニフェスト
-.claude-plugin/marketplace.json   # Claude Code マーケットプレイス定義
+apm.yml                           # APM package manifest
+.claude-plugin/marketplace.json   # Claude Code marketplace definition
 plugins/<name>/.claude-plugin/plugin.json
-.agents/plugins/marketplace.json # Codex マーケットプレイス定義
-plugins/<name>/plugin.json       # Codex用のAgent Plugins形式マニフェスト
-plugins/<name>/assets/           # Codexの表示用アイコン
+.agents/plugins/marketplace.json # Codex marketplace definition
+plugins/<name>/plugin.json       # Codex manifest in Agent Plugins format
+plugins/<name>/assets/           # Codex display icons
 scripts/
-├── sync-skills.sh                # SSoT → 生成先の同期 / --check で乖離検出
-├── lint-skills.sh                # マニフェスト・スキル規約の検証
-└── check-codex-plugins.mjs        # Codex配布定義の整合性 / --install でインストール検証
+├── sync-skills.sh                # Sync source files; --check detects drift
+├── lint-skills.sh                # Validate manifests and skill conventions
+└── check-codex-plugins.mjs        # Check Codex metadata; --install tests installation
 ```
 
-SKILL.mdは**自己完結**で、すべてのチャネルで完全に同一の内容です。Claude CodeとCodexは同じプラグインディレクトリの `skills/` を使います。専用サブエージェントは同梱せず、実行環境にあるサブエージェント機構（あれば）を使い、無ければ自力実行にフォールバックします。これによりチャネル間で挙動が分岐しません。
+Each SKILL.md is **self-contained** and identical across distribution channels. Claude Code and Codex share the same plugin `skills/` directory. Plugins do not bundle dedicated subagents: skills use the host's subagent tools when available and run the same steps themselves otherwise. This keeps behavior consistent across channels.
 
-同じ理由で、frontmatter には Agent Skills 仕様にある項目（`name` / `description` / `license` / `compatibility` / `metadata` / `allowed-tools`）だけを使います。仕様にない項目は、CI の skills-ref の検証で検出されます。
+For the same reason, use only Agent Skills specification fields in frontmatter: `name`, `description`, `license`, `compatibility`, `metadata`, and `allowed-tools`. The skills-ref CI check rejects unsupported fields.
 
-## スキルを編集するとき
+## Editing a skill
 
-1. `skills/<name>/` を編集する（生成先を直接編集しない）
-2. `plugins/<name>/.claude-plugin/plugin.json` と `plugins/<name>/plugin.json` の `version` を同じ値に上げる（修正はパッチ、機能の追加やふるまいの変更はマイナーを上げる）。両マニフェストの `name` / `version` / `description` / `author` / `keywords` の一致はCIで検証します
-3. 同期する:
+1. Edit `skills/<name>/`. Do not edit generated copies.
+2. Bump `version` in both `plugins/<name>/.claude-plugin/plugin.json` and `plugins/<name>/plugin.json` to the same value. Use a patch bump for fixes and a minor bump for new features or behavior changes. CI checks that `name`, `version`, `description`, `author`, and `keywords` match across both manifests.
+3. Sync the generated copies:
 
    ```bash
    ./scripts/sync-skills.sh
    ```
 
-4. 生成物も含めてコミットする（配布時に取得されるのは生成先のファイルのため、リポジトリにコミットが必要です）
+4. Include generated files in your commit. Distribution channels fetch those files directly from the repository.
 
-## 検証
+## Validation
 
-CIは `./scripts/sync-skills.sh --check` を実行し、生成先がSSoTと乖離していればビルドを落とします。
+CI runs `./scripts/sync-skills.sh --check` and fails if generated files differ from the source of truth.
 
 ```bash
-./scripts/lint-skills.sh          # マニフェスト・スキル規約の検証
-./scripts/sync-skills.sh --check  # 生成先の乖離チェック
+./scripts/lint-skills.sh          # Validate manifests and skill conventions
+./scripts/sync-skills.sh --check  # Detect drift in generated files
 ```
 
-CodexのCIでは `scripts/check-codex-plugins.mjs` で配布定義・共通メタデータ・アイコン参照を検証します。`--install` では、同梱するテンプレート・参照資料・アイコンを含むプラグイン全体がインストールされることも確認します。
+The Codex CI job uses `scripts/check-codex-plugins.mjs` to validate distribution metadata, shared manifest fields, and icon references. With `--install`, it also checks that each complete plugin is installed, including templates, references, and icons.
 
-CIは、Agent Skills 仕様の検証ツール [skills-ref](https://github.com/agentskills/agentskills/tree/main/skills-ref) でも各スキルを検証します。手元で実行するには Python 3.11 以上が必要です:
+CI also validates every skill against the Agent Skills specification with [skills-ref](https://github.com/agentskills/agentskills/tree/main/skills-ref). To run it locally, use Python 3.11 or later:
 
 ```bash
 pip install skills-ref==0.1.1
-agentskills validate skills/<name>   # コマンド名は agentskills
+agentskills validate skills/<name>   # The executable is named agentskills
 ```
 
-## 評価（evals）
+## Evaluations
 
-スキルが期待どおりに動くかを確かめる評価は `evals/<name>/evals.json` に置きます。形式は Anthropic の skill-creator スキルの `evals.json` に合わせており、評価ごとにユーザーの依頼（`prompt`）と、結果が満たすべき条件（`expectations`）を持ちます。`skills/` の外に置くため、配布物には含まれません。
+Store behavioral evaluations in `evals/<name>/evals.json`. The format follows Anthropic's skill-creator `evals.json`: each evaluation includes a user request (`prompt`) and criteria the result must satisfy (`expectations`). Keeping evaluations outside `skills/` excludes them from distributed packages.
 
-スキルを変更したら、変更前のスキルと同じ評価を実行して結果を比べます。skill-creator を使えば、実行・採点・比較までをまとめて進められます。
+After changing a skill, run the same evaluations against the original and updated versions and compare the results. The skill-creator workflow can handle running, grading, and comparing evaluations.
 
-## 新しいスキルを追加する
+## Adding a skill
 
-`skills/<name>/SKILL.md` を作れば、同期スクリプトが自動で検出して各生成先に配ります（スクリプトの編集は不要です）。ただし配布するには、そのスキルのプラグインをマニフェストに登録する必要があります:
+The synchronization script automatically discovers `skills/<name>/SKILL.md` and copies it to each generated directory. You do not need to edit the script, but you must register the plugin before it can be distributed.
 
-1. `skills/<name>/SKILL.md` を作成（`name` はディレクトリ名と一致させる。名前は、ほかのスキルと同じ動名詞形（`writing-commit-messages` のような形）にする）
-2. `plugins/<name>/.claude-plugin/plugin.json` と `plugins/<name>/plugin.json` を作成（`name` / `version` / `description` / `author` / `keywords` は両者でそろえる）。各形式の詳細は [Claude Code](CLAUDE_CODE.md#配布形式) / [Codex CLI](CODEX_CLI.md#配布形式) のガイドを参照する
-3. `.claude-plugin/marketplace.json` と `.agents/plugins/marketplace.json` の `plugins` に登録する（各ガイドと既存の登録を参照）
-4. `apm.yml` の `description` がスキル集全体の説明になっているか見直し、`keywords` にそのプラグインの `keywords` を足す
-5. `./scripts/sync-skills.sh` を実行してコミット
-6. [READMEの「収録スキル」](README.md#収録スキル)の表に1行追加する
+1. Create `skills/<name>/SKILL.md`. The frontmatter `name` must match the directory name. Follow the existing gerund-based naming convention, such as `writing-commit-messages`.
+2. Create `plugins/<name>/.claude-plugin/plugin.json` and `plugins/<name>/plugin.json`, keeping `name`, `version`, `description`, `author`, and `keywords` identical. See the [Claude Code](CLAUDE_CODE.md#distribution-format) and [Codex CLI](CODEX_CLI.md#distribution-format) guides for format details.
+3. Register the plugin in the `plugins` arrays in `.claude-plugin/marketplace.json` and `.agents/plugins/marketplace.json`. Follow the guides and existing entries.
+4. Check that the `description` in `apm.yml` describes the full collection, and add the new plugin's `keywords`.
+5. Run `./scripts/sync-skills.sh` and commit the generated files.
+6. Add a row to the [available skills table in README](README.md#available-skills).
 
-2と3の漏れは `lint-skills.sh` と `check-codex-plugins.mjs` が検出します。
+The `lint-skills.sh` and `check-codex-plugins.mjs` checks catch omissions in steps 2 and 3.
 
-## スキルを削除・改名するとき
+## Removing or renaming a skill
 
-スキルを削除・改名したときは、`sync-skills.sh` が対応するSSoTを失った生成先を検出して削除します（`--check` では取り残しとして報告）。プラグインの両マニフェスト・アイコンと、両マーケットプレイスの登録は手動で消し、`apm.yml` の `description` と `keywords` も見直してください。
+When a skill is removed or renamed, `sync-skills.sh` deletes generated directories whose source skill no longer exists. In `--check` mode, it reports them as stale instead. Remove the old plugin's manifests and icons, delete its entries from both marketplaces, and review the `description` and `keywords` in `apm.yml`.
 
-改名・削除時の設定と移行手順は、[Claude Code](CLAUDE_CODE.md#改名と削除) / [Codex CLI](CODEX_CLI.md#改名と削除) のガイドを参照してください。
+See the [Claude Code](CLAUDE_CODE.md#renaming-and-removing-skills) and [Codex CLI](CODEX_CLI.md#renaming-and-removing-skills) guides for migration settings and instructions.

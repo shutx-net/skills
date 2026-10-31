@@ -1,36 +1,36 @@
 # Claude Code
 
-[READMEに戻る](README.md)
+[Back to README](README.md)
 
-Claude Codeのプラグインマーケットプレイスから、必要なスキルをインストールできます。
+Install the skills you need from the Claude Code plugin marketplace.
 
-## インストール
+## Installation
 
-Claude Code上で、マーケットプレイスを登録して必要なスキルをインストールします。
+In Claude Code, register the marketplace and install a skill:
 
 ```text
 /plugin marketplace add shutx-net/skills
-/plugin install <スキル名>@shutx-skills
+/plugin install <skill-name>@shutx-skills
 ```
 
-`<スキル名>` は [収録スキル](README.md#収録スキル) の名前に置き換えてください。
+Replace `<skill-name>` with a name from the [available skills](README.md#available-skills).
 
-## 配布形式
+## Distribution format
 
-| パス | 用途 |
+| Path | Purpose |
 | --- | --- |
-| `.claude-plugin/marketplace.json` | マーケットプレイス定義 |
-| `plugins/<name>/.claude-plugin/plugin.json` | プラグインマニフェスト |
-| `plugins/<name>/skills/<name>/` | `skills/<name>/` から生成するスキル（Codexと共用） |
+| `.claude-plugin/marketplace.json` | Marketplace definition |
+| `plugins/<name>/.claude-plugin/plugin.json` | Plugin manifest |
+| `plugins/<name>/skills/<name>/` | Skills generated from `skills/<name>/` and shared with Codex |
 
-マーケットプレイスの `plugins` に `{"name": "<name>", "source": "./plugins/<name>"}` を追加して登録します。
+Register a plugin by adding `{"name": "<name>", "source": "./plugins/<name>"}` to the marketplace's `plugins` array.
 
-Claude Codeはマニフェストの `version` が変わるまで、インストール済みの利用者に更新を配りません。スキルを編集したら、Codex用マニフェストと同じ値に上げてください。
+Claude Code only distributes updates to existing installations when the manifest's `version` changes. After editing a skill, bump that version and use the same value in the Codex manifest.
 
-全チャネルで共通のSKILL.mdを使うため、Claude Code独自のfrontmatter（`argument-hint` / `when_to_use` 等）は使いません。
+All distribution channels share the same SKILL.md, so do not use Claude Code-specific frontmatter fields such as `argument-hint` or `when_to_use`.
 
-## 改名と削除
+## Renaming and removing skills
 
-配布側では、`.claude-plugin/marketplace.json` の `renames` に旧名を足します。改名なら `"旧名": "新しい名前"`、削除なら `"旧名": null` を指定します。インストール済みの利用者の設定は、新しい名前へ自動で移ります。`renames` は履歴なので、移行が済んでも消しません。
+When publishing a rename or removal, add the old name to `renames` in `.claude-plugin/marketplace.json`. Use `"old-name": "new-name"` for a rename, or `"old-name": null` for a removal. Existing users' settings migrate to the new name automatically. Keep these entries after migration: `renames` is a permanent migration history.
 
-スキル編集・追加、同期、検証の手順は、[CONTRIBUTING.md](CONTRIBUTING.md) を参照してください。
+See [CONTRIBUTING.md](CONTRIBUTING.md) for instructions on editing, adding, syncing, and validating skills.

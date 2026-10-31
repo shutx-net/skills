@@ -1,108 +1,110 @@
-# 履歴書 (Rirekisho) の記載項目
+# Rirekisho fields
 
-厚生労働省の履歴書様式例（2021年）をベースとした標準的な項目構成。
+Standard fields for a Japanese résumé (rirekisho), based on the Ministry of Health, Labour and Welfare's 2021 sample form.
 
-「必須」列: ◯ = 必須、△ = 任意
+In the Required column, ◯ means required and △ means optional. Quoted Japanese text is the wording used on the generated form.
 
-## 1. ヘッダー
+## 1. Header
 
-| 項目 | 必須 | 例 |
-|-----------|-----|-----|
-| 書類タイトル | ◯ | 「履歴書」 |
-| 作成日 | ◯ | 令和8年5月10日 / 2026年5月10日 |
+| Field | Required | Example |
+| --- | --- | --- |
+| Document title | ◯ | `履歴書` |
+| Date prepared | ◯ | May 10, 2026, using either the Gregorian or Japanese era calendar |
 
-## 2. 基本情報
+## 2. Personal information
 
-| 項目 | 必須 | 備考 |
-|-----------|-----|-----|
-| 氏名（漢字） | ◯ | 姓と名の間にスペース |
-| 氏名（ふりがな） | ◯ | ひらがな |
-| 生年月日 | ◯ | 西暦 or 和暦、年齢を併記 |
-| 性別 | △ | 任意（記載しない選択肢も可） |
-| 写真欄 | ◯ | 30mm × 40mm の領域を確保（実画像は空欄でも可） |
-| 現住所（郵便番号） | ◯ | 〒XXX-XXXX |
-| 現住所 | ◯ | 都道府県から記載 |
-| 現住所ふりがな | ◯ | ひらがな |
-| 電話番号 | ◯ | 固定 or 携帯 |
-| メールアドレス | ◯ | |
-| 連絡先（現住所と異なる場合） | △ | |
+| Field | Required | Notes |
+| --- | --- | --- |
+| Full name in kanji | ◯ | Separate family and given names with a space |
+| Name reading (furigana) | ◯ | Use hiragana |
+| Date of birth | ◯ | Use the Gregorian or Japanese era calendar and include the applicant's age |
+| Gender | △ | Optional; the applicant may choose not to include it |
+| Photo area | ◯ | Reserve 30 mm × 40 mm; the actual image may be left blank |
+| Postal code | ◯ | `〒XXX-XXXX` |
+| Current address | ◯ | Start with the prefecture |
+| Address reading (furigana) | ◯ | Use hiragana |
+| Phone number | ◯ | Landline or mobile |
+| Email address | ◯ | |
+| Alternative contact address | △ | Include only if different from the current address |
 
-## 3. 学歴・職歴
+## 3. Education and employment history
 
-時系列（古い順）で記載。
+List entries in chronological order, oldest first.
 
-| 項目 | 例 |
-|-----------|-----|
-| 年 | 2018 / 平成30 |
-| 月 | 4 |
-| 内容 | ○○大学 ○○学部 ○○学科 入学 |
+| Field | Example |
+| --- | --- |
+| Year | 2018, or Heisei 30 |
+| Month | 4 |
+| Entry | Enrolled in a department and faculty at a university |
 
-慣例：
-- 学歴は中学校卒業から記載することが多い
-- 「以上」を最終行に右寄せで記載
-- 学歴と職歴のセクションを分ける
+Conventions:
 
-## 4. 免許・資格
+- Education commonly starts with junior high school graduation.
+- Put `以上` at the right edge of the final row to mark the end of the entries.
+- Use separate education and employment sections.
 
-| 項目 | 例 |
-|-----------|-----|
-| 取得年月 | 2022年6月 |
-| 資格名 | 普通自動車第一種運転免許 取得 |
+## 4. Licenses and qualifications
 
-## 5. 志望動機・自己PR・趣味特技
+| Field | Example |
+| --- | --- |
+| Month and year obtained | June 2022 |
+| Qualification | Obtained a Class 1 ordinary driver's license |
 
-複数行のテキスト領域。書類によっては以下が分かれる：
-- 志望の動機
-- 自己PR
-- 本人希望記入欄
-- 趣味・特技
+## 5. Motivation, strengths, and interests
 
-通勤時間・扶養家族数・配偶者の有無は、厚生労働省の様式例で削除された項目のため、応募先から求められた場合を除いて設けない。
+Provide multiline text areas. Depending on the form, these may be separate sections for:
 
-## 6. 本人希望記入欄
+- Reasons for applying
+- Personal strengths
+- Employment preferences
+- Hobbies and special skills
 
-希望勤務地、希望職種、給与等の希望条件を記載。
+Do not include commuting time, number of dependents, or marital status unless the employer requests them. These fields were removed from the Ministry's sample form.
+
+## 6. Employment preferences
+
+Include preferences such as work location, role, and salary.
 
 ---
 
-## レイアウト指針
+## Layout guidelines
 
-- **A4 縦の2枚組** を標準とする（厚生労働省の様式例と同じ構成）。1枚目に基本情報・写真・学歴・職歴、2枚目に免許・資格・志望動機など・本人希望記入欄を置く
-- 写真欄は1枚目の **右上**（30mm × 40mm）
-- 学歴・職歴は **横長テーブル**（年 / 月 / 内容）
-- 各セクション間は罫線で区切る（japanese-formal）
-- フォントサイズは本文 10〜10.5pt
-- 行高は 1.5〜1.7em
+- Use **two A4 portrait sheets** by default, following the Ministry's sample layout. Put personal information, the photo, education, and employment on the first sheet. Put licenses, qualifications, motivation, and employment preferences on the second.
+- Place the photo area at the **top right** of the first sheet, at 30 mm × 40 mm.
+- Use a **wide table** with year, month, and entry columns for education and employment.
+- Separate sections with ruled borders in the `japanese-formal` style.
+- Use 10–10.5 pt body text.
+- Use a line height of 1.5–1.7 em.
 
-### 1枚に入る量の目安
+### Page capacity guidelines
 
-テンプレートの表は行の高さが固定なので、行数で収まりを判断できる。1行に収まらない項目は2行として数える。
+Template tables have fixed row heights, so use row counts to check whether content fits. Count an entry that wraps onto a second line as two rows.
 
-| 欄 | japanese-formal | modern-simple |
-|------|------|------|
-| 1枚目の学歴・職歴 | 20行 | 12行 |
-| 2枚目の免許・資格 | 14行 | 12行 |
-| 2枚目に学歴・職歴の続きを置くときの、続きと免許・資格の合計 | 11行 | 10行 |
-| 志望動機などの欄 | 約600字 | 約550字 |
-| 本人希望記入欄 | 約240字 | 約180字 |
+| Area | japanese-formal | modern-simple |
+| --- | --- | --- |
+| Education and employment on sheet 1 | 20 rows | 12 rows |
+| Licenses and qualifications on sheet 2 | 14 rows | 12 rows |
+| Combined continuation rows and qualifications when history continues on sheet 2 | 11 rows | 10 rows |
+| Motivation and related text | About 600 Japanese characters | About 550 Japanese characters |
+| Employment preferences | About 240 Japanese characters | About 180 Japanese characters |
 
-- japanese-formal の行数は、「学歴」「職歴」の見出し行、その間の空行、「以上」を含む。modern-simple の行数は、学歴と職歴の行の合計
-- 学歴・職歴が1枚目に収まらないときは、2枚目の先頭に同じ形の表を「学歴・職歴（続き）」（modern-simple では「職歴（続き）」など）の見出しで置いて続ける
-- 志望動機などの欄や本人希望記入欄が目安を超えると欄が伸び、2枚目に入る行はその分だけ減る
-- 目安は A4 の場合。B5 では1枚が小さいため、これより少なくなる
+- For `japanese-formal`, the row counts include the education and employment headings, the blank row between them, and the final `以上` row. For `modern-simple`, count the education and employment entries together.
+- If the history does not fit on sheet 1, continue it in a matching table at the top of sheet 2. Use `学歴・職歴（続き）` as the heading, or an appropriate heading such as `職歴（続き）` for `modern-simple`.
+- Longer motivation or preference text expands its section and reduces the number of rows that fit on sheet 2.
+- These estimates assume A4. B5 sheets hold less content.
 
-### 横向き（見開き）
+### Landscape spreads
 
-横向きを指定されたら、2枚組を左右に並べた見開きにする。用紙は1枚の2倍の大きさにする（A4 なら A3 横、B5 なら JIS-B4 横）。
+When the user requests landscape orientation, arrange the two portrait sheets side by side as a spread. Use paper twice the size of one sheet: A3 landscape for A4 sheets, or JIS-B4 landscape for B5 sheets.
 
-1. `@page` の `size` を `A3 landscape`（B5 なら `JIS-B4 landscape`）にする
-2. 2つの `.page` を `<div class="spread">` で囲む
-3. 次の CSS を加える
+1. Set `@page size` to `A3 landscape`, or `JIS-B4 landscape` for B5.
+2. Wrap both `.page` elements in `<div class="spread">`.
+3. Add the following CSS:
 
 ```css
 .spread {
   display: flex;
-  width: 420mm;              /* 1枚の幅の2倍（JIS-B4 なら 364mm） */
+  width: 420mm;              /* Twice the sheet width; use 364mm for JIS-B4 */
   margin: 0 auto;
 }
 
@@ -111,23 +113,23 @@
 }
 
 .spread > .page + .page {
-  break-before: auto;        /* 見開きでは2枚目の前で改ページしない */
+  break-before: auto;        /* Keep the second sheet in the same spread */
 }
 ```
 
-1枚ごとの大きさは縦で作るときと同じなので、「1枚に入る量の目安」はそのまま使える。
+Each sheet retains its portrait dimensions, so the page capacity guidelines still apply.
 
-## 必須ヒアリング項目
+## Required information
 
-ユーザーから以下の情報を取得すること：
+Collect the following from the user:
 
-1. 氏名（漢字・ふりがな）
-2. 生年月日
-3. 性別（記載するか含めて確認）
-4. 住所・連絡先
-5. 学歴（中学卒業以降）
-6. 職歴
-7. 資格・免許
-8. 志望動機
-9. 自己PR・趣味特技
-10. 本人希望記入欄
+1. Full name in kanji and furigana
+2. Date of birth
+3. Gender, including whether to show it
+4. Address and contact details
+5. Education, starting with junior high school graduation
+6. Employment history
+7. Qualifications and licenses
+8. Reasons for applying
+9. Personal strengths, hobbies, and special skills
+10. Employment preferences

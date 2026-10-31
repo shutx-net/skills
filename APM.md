@@ -1,12 +1,12 @@
-# APM（Agent Package Manager）
+# APM (Agent Package Manager)
 
-[READMEに戻る](README.md)
+[Back to README](README.md)
 
-[APM](https://microsoft.github.io/apm/) パッケージとして、Copilot / Cursor / OpenCode / Codex / Gemini / Claude Codeで利用できます。
+Use the [APM](https://microsoft.github.io/apm/) package with Copilot, Cursor, OpenCode, Codex, Gemini, or Claude Code.
 
-## インストール
+## Installation
 
-利用するプロジェクトの `apm.yml` に依存として追加します。
+Add this repository as a dependency in your project's `apm.yml`:
 
 ```yaml
 dependencies:
@@ -14,18 +14,18 @@ dependencies:
     - shutx-net/skills
 ```
 
-その後、プロジェクト内で実行します。
+Then run the following command in your project:
 
 ```bash
 apm install
 ```
 
-Claude Codeでは `.claude/skills/` に、Copilot / Cursor / OpenCode / Codex / Geminiでは `.agents/skills/` にスキルが配備されます。
+APM installs skills into `.claude/skills/` for Claude Code, or `.agents/skills/` for Copilot, Cursor, OpenCode, Codex, and Gemini.
 
-## 配布形式
+## Distribution format
 
-リポジトリルートの `apm.yml` がパッケージマニフェストです。配布用スキルは、`skills/<name>/` から `.apm/skills/<name>/` に同期して生成します。
+The root `apm.yml` is the package manifest. Skills are copied from `skills/<name>/` to `.apm/skills/<name>/` by the synchronization script.
 
-スキルを追加・削除・改名するときは、`apm.yml` の `description` と `keywords` も見直してください。
+When adding, removing, or renaming a skill, review the `description` and `keywords` in `apm.yml` as well.
 
-スキル編集・追加、同期、検証の手順は、[CONTRIBUTING.md](CONTRIBUTING.md) を参照してください。
+See [CONTRIBUTING.md](CONTRIBUTING.md) for instructions on editing, adding, syncing, and validating skills.

@@ -1,6 +1,6 @@
 {
   "name": "implementing-in-phases",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "フェーズ分割された探索・実装計画をJSONファイルとして書き出し、サブエージェントで段階的に実装するワークフロー",
   "author": {
     "name": "shutx"
