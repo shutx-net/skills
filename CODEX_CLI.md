@@ -1,53 +1,53 @@
 # Codex CLI
 
-[READMEに戻る](README.md)
+[Back to README](README.md)
 
-Codex CLIのプラグインマーケットプレイスから、必要なスキルをインストールできます。
+Install the skills you need from the Codex CLI plugin marketplace.
 
-## インストール
+## Installation
 
-ターミナルで、マーケットプレイスを登録して必要なスキルをインストールします。
+In your terminal, register the marketplace and install a skill:
 
 ```bash
 codex plugin marketplace add shutx-net/skills
-codex plugin add <スキル名>@shutx-skills
+codex plugin add <skill-name>@shutx-skills
 ```
 
-`<スキル名>` は [収録スキル](README.md#収録スキル) の名前に置き換えてください。
+Replace `<skill-name>` with a name from the [available skills](README.md#available-skills).
 
-## 更新
+## Updating
 
-配布元を更新し、使っているプラグインを再取得します。
+Refresh the marketplace, then reinstall each plugin you use:
 
 ```bash
 codex plugin marketplace upgrade shutx-skills
-codex plugin add <スキル名>@shutx-skills
+codex plugin add <skill-name>@shutx-skills
 ```
 
-コマンドの仕様は、OpenAI公式の [Developer commands](https://learn.chatgpt.com/docs/developer-commands#codex-plugin) を参照してください。
+For command details, see OpenAI's [Developer commands](https://learn.chatgpt.com/docs/developer-commands#codex-plugin).
 
-## 配布形式
+## Distribution format
 
-| パス | 用途 |
+| Path | Purpose |
 | --- | --- |
-| `.agents/plugins/marketplace.json` | マーケットプレイス定義 |
-| `plugins/<name>/plugin.json` | Agent Plugins形式のマニフェスト |
-| `plugins/<name>/skills/<name>/` | `skills/<name>/` から生成するスキル（Claude Codeと共用） |
-| `plugins/<name>/assets/` | 表示用アイコン |
+| `.agents/plugins/marketplace.json` | Marketplace definition |
+| `plugins/<name>/plugin.json` | Agent Plugins manifest |
+| `plugins/<name>/skills/<name>/` | Skills generated from `skills/<name>/` and shared with Claude Code |
+| `plugins/<name>/assets/` | Display icons |
 
-マニフェストはプラグイン直下の `plugin.json` に置き、Agent Pluginsのスキーマを宣言します。スキルは直下の `skills/` から検出されるため、マニフェストに `skills` フィールドは不要です。表示名やアイコンは `extensions.com.openai.interface` に置き、`logo` / `composerIcon` が参照する画像を `assets/` 内に用意します。
+Place `plugin.json` at the plugin root and declare the Agent Plugins schema. Skills are discovered in the root `skills/` directory, so the manifest does not need a `skills` field. Put display names and icon metadata in `extensions.com.openai.interface`, and store the images referenced by `logo` and `composerIcon` in `assets/`.
 
-マーケットプレイスの `source.path` は、リポジトリルートからの `./plugins/<name>` とし、各登録に `policy.installation` / `policy.authentication` / `category` を指定します。既存の登録では、それぞれ `AVAILABLE` / `ON_INSTALL` / `Productivity` を使っています。
+Set each marketplace entry's `source.path` to `./plugins/<name>`, relative to the repository root. Every entry also needs `policy.installation`, `policy.authentication`, and `category`. Existing entries use `AVAILABLE`, `ON_INSTALL`, and `Productivity`, respectively.
 
-配布形式は、OpenAI公式の [Package your plugin](https://developers.openai.com/plugins/build/plugins) に準拠しています。
+This layout follows OpenAI's [Package your plugin](https://developers.openai.com/plugins/build/plugins) guide.
 
-## 改名と削除
+## Renaming and removing skills
 
-改名されたスキルは、旧名のプラグインを削除してから新名でインストールします。削除だけの場合は1つ目のコマンドを実行します。
+When a skill is renamed, remove the old plugin and install it under the new name. For a removal, run only the first command.
 
 ```bash
-codex plugin remove <旧名>@shutx-skills
-codex plugin add <新しい名前>@shutx-skills
+codex plugin remove <old-name>@shutx-skills
+codex plugin add <new-name>@shutx-skills
 ```
 
-スキル編集・追加、同期、検証の手順は、[CONTRIBUTING.md](CONTRIBUTING.md) を参照してください。
+See [CONTRIBUTING.md](CONTRIBUTING.md) for instructions on editing, adding, syncing, and validating skills.

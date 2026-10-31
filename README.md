@@ -1,25 +1,25 @@
 # shutx skills
 
-Claude Code / Codex などで使うスキル・プラグイン置き場。
+Skills and plugins for Claude Code, Codex, and other coding agents.
 
-## 収録スキル
+## Available skills
 
-| スキル | 概要 |
+| Skill | Description |
 | --- | --- |
-| [`implementing-in-phases`](skills/implementing-in-phases/SKILL.md) | 実装タスクをフェーズ分割し、フェーズごとの計画JSONを書き出してから段階的に実装する |
-| [`writing-commit-messages`](skills/writing-commit-messages/SKILL.md) | git commitのメッセージを Conventional Commits 形式（`feat:` / `fix:` 等のプレフィックス）で書く |
-| [`creating-job-application-docs`](skills/creating-job-application-docs/SKILL.md) | 履歴書・職務経歴書・エントリーシートを、印刷・PDF化を前提とした HTML/CSS で作成する |
+| [`implementing-in-phases`](skills/implementing-in-phases/SKILL.md) | Break an implementation task into phases, write a JSON plan for each phase, and work through them in order. |
+| [`writing-commit-messages`](skills/writing-commit-messages/SKILL.md) | Write Git commit messages using Conventional Commits prefixes such as `feat:` and `fix:`. |
+| [`creating-job-application-docs`](skills/creating-job-application-docs/SKILL.md) | Create Japanese résumés, career histories, and entry sheets as HTML/CSS documents ready to print or save as PDF. |
 
-## インストール
+## Installation
 
-導入手順と配布形式の詳細は、各ガイドを参照してください。
+See the guide for your preferred distribution method.
 
-| 配布方法 | ガイド |
+| Distribution method | Guide |
 | --- | --- |
-| Claude Code プラグインマーケットプレイス | [CLAUDE_CODE.md](CLAUDE_CODE.md) |
-| Codex CLI プラグインマーケットプレイス | [CODEX_CLI.md](CODEX_CLI.md) |
-| APM パッケージ（Copilot / Cursor / Codex 等） | [APM.md](APM.md) |
+| Claude Code plugin marketplace | [CLAUDE_CODE.md](CLAUDE_CODE.md) |
+| Codex CLI plugin marketplace | [CODEX_CLI.md](CODEX_CLI.md) |
+| APM package for Copilot, Cursor, Codex, and other agents | [APM.md](APM.md) |
 
-## スキルの開発
+## Developing skills
 
-リポジトリ構成、スキルの追加・編集、同期、検証、評価の手順は [CONTRIBUTING.md](CONTRIBUTING.md) を参照してください。
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the repository layout and instructions for adding, editing, syncing, validating, and evaluating skills.
