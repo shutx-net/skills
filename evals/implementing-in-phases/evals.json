@@ -13,6 +13,7 @@
         "実装を始める前に scripts/validate_plan.py を実行し、ERROR がない状態で実装を始めている",
         "Claude Code では、計画担当を general-purpose 等の書き込めるサブエージェントとして model: opus（メイン会話がそれより上位のモデルなら省略）で起動し、Plan・Explore・fork に計画を保存させていない",
         "Claude Code では、実装担当を model: sonnet で起動し、計画担当と実装担当のどちらにも effort: medium を起動パラメータで渡している",
+        "Codex では、計画担当に gpt-6-astra、実装担当に gpt-6.1-sol を要求し、両方に medium を起動パラメータで渡している。利用できない設定は継承などの代替と区別して報告している",
         "実装担当の起動プロンプトに計画やスキーマの全文を貼らず、ファイルのパスを渡している",
         "各フェーズの result-NN.json があり、status と、検証項目ごとの passed / failed / not_run が記録されている",
         "inventory-app/ で python -m unittest discover -s tests が成功し、list の出力形式が変わっていない",
@@ -43,6 +44,7 @@
       "expectations": [
         "test_coupons.py の test_usable_on_end_date が失敗していることを検出している",
         "失敗した検証項目を passed と記録しておらず、その結果ファイルの status が completed になっていない",
+        "既存のテスト失敗を再現することを合格条件に言い換えず、テスト実行の失敗と変更前との比較結果を分けて記録している",
         "失敗が変更前から存在し、今回のタスクとは関係ないことを、変更前の状態での実行結果などの根拠とともに示している",
         "coupons.py や test_coupons.py を、ユーザーの確認なしに修正・削除・スキップしていない",
         "with_tax と quote --tax のテストが通っている",
@@ -74,7 +76,7 @@
         "計画を始める前に effort を決めている。質問できる環境では、実行環境がサポートする effort の選択肢を示してユーザーに選ばせている",
         "質問できない環境では、計画担当に high、実装担当に medium を使っている",
         "既定値を使った場合は、そのことを完了報告に書いている",
-        "Claude Code では、effort をプロンプトの文言だけでなく、サブエージェントの起動パラメータで渡している",
+        "ホストが対応している場合、effort をプロンプトの文言だけでなく、サブエージェントの起動パラメータで渡している",
         "plan-index.json の effort に、planning と implementation のそれぞれの値が記録されている"
       ]
     },
@@ -88,6 +90,48 @@
         "1ファイル数行の変更にはフェーズ分割が過剰であることを伝えている",
         "直接修正することを提案している（提案に沿って直接直した場合は、typo だけを修正している）",
         "計画ディレクトリや計画 JSON を作っていない"
+      ]
+    },
+    {
+      "id": 7,
+      "name": "codex-launch-preview",
+      "prompt": "Codexで implementing-in-phases を使います。親のモデルは gpt-6.1-sol です。effort は medium で、計画担当と実装担当の起動設定を先に示してください。起動ツールは model、reasoning_effort、fork_turns を受け取り、エージェント種別の引数はありません。まだエージェントを起動したりファイルを変更したりしないでください。",
+      "expected_output": "Codexの参照先だけを読み、計画担当に gpt-6-astra、実装担当に gpt-6.1-sol、両方に reasoning_effort: medium と fork_turns: none を使う設定を示す。",
+      "files": [],
+      "expectations": [
+        "Codexのホスト別ガイドを読み、Claude Code用のガイドは読んでいない",
+        "計画担当には model: gpt-6-astra、実装担当には model: gpt-6.1-sol を示している",
+        "両役割に reasoning_effort: medium と fork_turns: none を指定している",
+        "起動ツールに存在しない agent_type や subagent_type、Claude Codeのモデル別名を渡していない",
+        "実際にサブエージェントを起動したり、設定や計画ファイルを書き換えたりしていない"
+      ]
+    },
+    {
+      "id": 8,
+      "name": "claude-code-launch-preview",
+      "prompt": "Claude Codeで implementing-in-phases を使う設定を確認したいです。親のモデルは Sonnet、effort は high です。Agentツールの subagent_type、model、effort を使って、計画担当と実装担当をそれぞれどう起動するか示してください。まだエージェントを起動したりファイルを変更したりしないでください。",
+      "expected_output": "Claude Codeの参照先だけを読み、両役割を general-purpose、計画担当を opus、実装担当を sonnet、両方の effort を high とする。",
+      "files": [],
+      "expectations": [
+        "Claude Codeのホスト別ガイドを読み、Codex用のガイドは読んでいない",
+        "両役割の subagent_type に general-purpose を指定している",
+        "計画担当には model: opus、実装担当には model: sonnet、両方に effort: high を指定している",
+        "Plan・Explore・fork を計画担当に使わず、GPTのモデル名やCodex専用の起動引数を混ぜていない",
+        "実際にサブエージェントを起動したりファイルを変更したりしていない"
+      ]
+    },
+    {
+      "id": 9,
+      "name": "codex-explicit-models",
+      "prompt": "Codexで implementing-in-phases を使います。今回は計画担当も実装担当も gpt-6.1-sol、effort は low にしてください。起動ツールは model、reasoning_effort、fork_turns を受け取ります。まず起動設定だけ示してください。エージェントの起動や、ホストの設定ファイルの変更はまだしないでください。",
+      "expected_output": "Codexの既定モデルよりユーザーの指定を優先し、両役割に gpt-6.1-sol と reasoning_effort: low を指定する。",
+      "files": [],
+      "expectations": [
+        "Codexのホスト別ガイドだけを読んでいる",
+        "両役割に model: gpt-6.1-sol と reasoning_effort: low を指定している",
+        "モデルとeffortを指定する起動で fork_turns: none を指定している",
+        "指定を gpt-6-astra や役割の既定effortで上書きしていない",
+        "サブエージェントの起動や、ホストの設定ファイルの変更をしていない"
       ]
     }
   ]

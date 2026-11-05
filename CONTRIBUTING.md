@@ -35,6 +35,8 @@ scripts/
 
 Each SKILL.md is **self-contained** and identical across distribution channels. Claude Code and Codex share the same plugin `skills/` directory. Plugins do not bundle dedicated subagents: skills use the host's subagent tools when available and run the same steps themselves otherwise. This keeps behavior consistent across channels.
 
+Keep shared workflows, data formats, and validation in the common skill files. When host-specific guidance is substantial, put model names, launch parameters, and continuation details in separate references and have SKILL.md route to only the applicable host's guide.
+
 For the same reason, use only Agent Skills specification fields in frontmatter: `name`, `description`, `license`, `compatibility`, `metadata`, and `allowed-tools`. The skills-ref CI check rejects unsupported fields.
 
 ## Editing a skill
