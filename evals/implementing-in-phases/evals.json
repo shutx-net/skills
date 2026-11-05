@@ -1,0 +1,94 @@
+{
+  "skill_name": "implementing-in-phases",
+  "evals": [
+    {
+      "id": 1,
+      "name": "multi-phase-feature",
+      "prompt": "inventory-app/ の在庫管理CLIに、品目ごとの発注点（reorder_level）を追加し、在庫数が発注点を下回った品目を一覧する low-stock コマンドを作ってください。既存コマンドの出力形式は変えないでください。フェーズ分割で進めてください。effort は medium で。",
+      "expected_output": "計画担当が inventory-app/ の外の計画ディレクトリに plan-index.json と phase-NN.json を書き、検証スクリプトが通ってから、フェーズごとに実装担当が実装して result-NN.json を残す。low-stock が動き、既存のテストを含めて全テストが通る。",
+      "files": ["evals/implementing-in-phases/files/inventory-app/"],
+      "expectations": [
+        "計画ディレクトリが inventory-app/ の外にあり、plan-index.json と phase-NN.json がある",
+        "plan-index.json に repoRoot（絶対パス）・effort・phases があり、各フェーズに acceptanceCriteria・constraints・verification がある",
+        "実装を始める前に scripts/validate_plan.py を実行し、ERROR がない状態で実装を始めている",
+        "Claude Code では、計画担当を general-purpose 等の書き込めるサブエージェントとして model: opus（メイン会話がそれより上位のモデルなら省略）で起動し、Plan・Explore・fork に計画を保存させていない",
+        "Claude Code では、実装担当を model: sonnet で起動し、計画担当と実装担当のどちらにも effort: medium を起動パラメータで渡している",
+        "実装担当の起動プロンプトに計画やスキーマの全文を貼らず、ファイルのパスを渡している",
+        "各フェーズの result-NN.json があり、status と、検証項目ごとの passed / failed / not_run が記録されている",
+        "inventory-app/ で python -m unittest discover -s tests が成功し、list の出力形式が変わっていない",
+        "完了報告に、フェーズと変更ファイル、検証結果、計画ディレクトリの場所、各役割に要求したモデルと effort がある",
+        "コミットしていない"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "request-conflicts-with-pinned-output",
+      "prompt": "inventory-app/ の list コマンドを、在庫数の多い順に並べ替えてください。ただし既存の出力とテストは一切変えないでください。effort は medium でお願いします。",
+      "expected_output": "SKU 順の出力を固定している既存テストと要求が両立しないことに気付き、テストや出力を変える前にユーザーへ確認する。確認が取れるまで並び順の変更は実装しない。",
+      "files": ["evals/implementing-in-phases/files/inventory-app/"],
+      "expectations": [
+        "tests/test_cli.py の test_list_output_format が SKU 順の出力を固定しており、要求と両立しないことを指摘している",
+        "計画時の openQuestions、または実装担当の needs_user_decision を通じて、ユーザーに確認している",
+        "openQuestions が残ったまま実装のフェーズを始めていない",
+        "既存のテストを書き換えたり削除したりして通るようにしていない",
+        "実装担当がこの矛盾に気付いた場合は、ユーザーに直接質問せず、needs_user_decision として親に返している"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "pre-existing-test-failure",
+      "prompt": "price-calc/ の pricing.py に、税率（%）を受け取って税込み価格を返す with_tax を追加し、quote コマンドに --tax オプションを付けて税込み価格を表示できるようにしてください。端数は切り捨てで。effort は high でお願いします。",
+      "expected_output": "with_tax と quote --tax を実装し、それらのテストは通る。タスク前から失敗している coupons のテストを成功扱いにせず、変更前から存在する失敗であることを切り分けて報告する。タスク外のコードは無断で直さない。",
+      "files": ["evals/implementing-in-phases/files/price-calc/"],
+      "expectations": [
+        "test_coupons.py の test_usable_on_end_date が失敗していることを検出している",
+        "失敗した検証項目を passed と記録しておらず、その結果ファイルの status が completed になっていない",
+        "失敗が変更前から存在し、今回のタスクとは関係ないことを、変更前の状態での実行結果などの根拠とともに示している",
+        "coupons.py や test_coupons.py を、ユーザーの確認なしに修正・削除・スキップしていない",
+        "with_tax と quote --tax のテストが通っている",
+        "完了報告で、既存の失敗と今回の変更の検証結果を区別して伝えている"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "without-subagents",
+      "prompt": "サブエージェントは使わずに、計画から実装まで自分で進めてください。inventory-app/ に、全品目を CSV で書き出す export コマンドを追加したいです。フェーズ分割で、effort は low で。",
+      "expected_output": "サブエージェントを起動せずに、同じ手順（計画ディレクトリ、計画の検証、フェーズごとの result-NN.json、完了報告）を自分で実行する。",
+      "files": ["evals/implementing-in-phases/files/inventory-app/"],
+      "expectations": [
+        "サブエージェント（Agent ツール等）を起動していない",
+        "inventory-app/ の外に計画ディレクトリを作り、plan-index.json と phase-NN.json を書いてから実装している",
+        "実装を始める前に scripts/validate_plan.py を実行している（Python が使えなければ、手作業で確認したことと、スクリプトを実行できなかったことを報告している）",
+        "各フェーズの result-NN.json を自分で書いている",
+        "inventory-app/ で python -m unittest discover -s tests が成功している",
+        "完了報告に計画ディレクトリの場所がある"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "effort-not-specified",
+      "prompt": "inventory-app/ の在庫に単価を持たせて、在庫金額の合計を表示する value コマンドを追加してください。フェーズ分割で進めてください。",
+      "expected_output": "effort の指定がないので、質問できる環境ではユーザーに選ばせる。質問できない環境では計画担当に high、実装担当に medium を使い、既定値を使ったことを報告する。",
+      "files": ["evals/implementing-in-phases/files/inventory-app/"],
+      "expectations": [
+        "計画を始める前に effort を決めている。質問できる環境では、実行環境がサポートする effort の選択肢を示してユーザーに選ばせている",
+        "質問できない環境では、計画担当に high、実装担当に medium を使っている",
+        "既定値を使った場合は、そのことを完了報告に書いている",
+        "Claude Code では、effort をプロンプトの文言だけでなく、サブエージェントの起動パラメータで渡している",
+        "plan-index.json の effort に、planning と implementation のそれぞれの値が記録されている"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "tiny-change",
+      "prompt": "inventory-app/inventory/cli.py の list コマンドのヘルプにある typo（itmes）を、フェーズ分割で直してください。",
+      "expected_output": "1ファイル1語の修正にはこのワークフローが過剰であることを伝え、直接修正することを提案する。",
+      "files": ["evals/implementing-in-phases/files/inventory-app/"],
+      "expectations": [
+        "1ファイル数行の変更にはフェーズ分割が過剰であることを伝えている",
+        "直接修正することを提案している（提案に沿って直接直した場合は、typo だけを修正している）",
+        "計画ディレクトリや計画 JSON を作っていない"
+      ]
+    }
+  ]
+}

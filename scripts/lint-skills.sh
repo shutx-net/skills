@@ -8,7 +8,7 @@
 #   - marketplace.json の source が指すディレクトリが存在すること
 #   - SSoTのスキルが公式規約を満たすこと
 #     （name がディレクトリ名と一致、description が1024文字以内、本文500行以内）
-#   - SSoTの `LOAD references/...` の参照先が存在すること
+#   - SSoTの `LOAD references/...` と `scripts/...` の参照先が存在すること
 #   - 各スキルが配布チャネルに登録されていること（plugin.json / marketplace.json）
 #   - プラグインにエージェントを同梱していないこと（自己完結の担保）
 # CodexのJSON・登録内容・共通メタデータの詳細は check-codex-plugins.mjs が検証する。
@@ -126,8 +126,12 @@ for skill_dir in skills/*/; do
 		err "$skill_md: 本文が500行を超えています (${lines}行)"
 	fi
 
-	# LOAD で参照している references ファイルの存在確認
-	sed -n 's/.*LOAD \(references\/[A-Za-z0-9_./-]*\).*/\1/p' "$skill_md" |
+	# `LOAD references/...` と、バッククォートで囲んだ `scripts/...` の参照先の存在確認
+	# （1行に複数あってもすべて拾う。grep は一致なしで非ゼロになるため || true を付ける）
+	{
+		grep -o 'LOAD references/[A-Za-z0-9_./-]*' "$skill_md" | sed 's/^LOAD //' || true
+		grep -o '`scripts/[A-Za-z0-9_./-]*`' "$skill_md" | tr -d '`' || true
+	} |
 		sed 's/\.$//' | sort -u |
 		while IFS= read -r ref; do
 			if [ ! -f "${skill_dir}${ref}" ]; then

@@ -9,12 +9,15 @@
 ```text
 skills/<name>/                    # Source of truth; edit skills here
 ├── SKILL.md                      # Self-contained skill instructions
-└── references/                   # Supporting documents loaded by the skill
+├── references/                   # Supporting documents loaded by the skill
+└── scripts/                      # Optional helper scripts the skill runs
 
 .apm/skills/<name>/               # Generated: APM package
 plugins/<name>/skills/<name>/     # Generated: shared by Claude Code and Codex
 
 evals/<name>/evals.json           # Skill evaluations; excluded from packages
+evals/<name>/files/               # Input files for the evaluations
+tests/<name>/                     # Tests for the skill's scripts; excluded from packages
 
 LICENSE                          # Canonical license text for all packages
 apm.yml                           # APM package manifest
@@ -26,6 +29,7 @@ plugins/<name>/assets/           # Codex display icons
 scripts/
 ├── sync-skills.sh                # Sync source files; --check detects drift
 ├── lint-skills.sh                # Validate manifests and skill conventions
+├── test-skill-scripts.sh         # Run the tests in tests/
 └── check-codex-plugins.mjs        # Check Codex metadata; --install tests installation
 ```
 
@@ -52,9 +56,12 @@ CI runs `./scripts/sync-skills.sh --check` and fails if generated files differ f
 ```bash
 ./scripts/lint-skills.sh          # Validate manifests and skill conventions
 ./scripts/sync-skills.sh --check  # Detect drift in generated files
+./scripts/test-skill-scripts.sh   # Test the scripts bundled with skills (requires Python 3)
 ```
 
-The Codex CI job uses `scripts/check-codex-plugins.mjs` to validate distribution metadata, shared manifest fields, and icon references. With `--install`, it also checks that each complete plugin is installed, including templates, references, and icons.
+Scripts bundled in `skills/<name>/scripts/` run on every host the skill supports. Write them for the Python 3 standard library or POSIX sh. SKILL.md should reference them by paths relative to the skill directory and say what to do when they can't run. Put their tests in `tests/<name>/test_*.py`. CI runs them with `./scripts/test-skill-scripts.sh`.
+
+The Codex CI job uses `scripts/check-codex-plugins.mjs` to validate distribution metadata, shared manifest fields, and icon references. With `--install`, it also checks that each complete plugin is installed, including templates, references, scripts, and icons.
 
 CI also validates every skill against the Agent Skills specification with [skills-ref](https://github.com/agentskills/agentskills/tree/main/skills-ref). To run it locally, use Python 3.11 or later:
 
@@ -65,7 +72,7 @@ agentskills validate skills/<name>   # The executable is named agentskills
 
 ## Evaluations
 
-Store behavioral evaluations in `evals/<name>/evals.json`. The format follows Anthropic's skill-creator `evals.json`: each evaluation includes a user request (`prompt`) and criteria the result must satisfy (`expectations`). Keeping evaluations outside `skills/` excludes them from distributed packages.
+Store behavioral evaluations in `evals/<name>/evals.json`. The format follows Anthropic's skill-creator `evals.json`: each evaluation includes a user request (`prompt`) and criteria the result must satisfy (`expectations`). Put input files, such as a sample project, in `evals/<name>/files/` and list them in `files`. Keeping evaluations outside `skills/` excludes them from distributed packages.
 
 After changing a skill, run the same evaluations against the original and updated versions and compare the results. The skill-creator workflow can handle running, grading, and comparing evaluations.
 
