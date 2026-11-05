@@ -23,6 +23,7 @@ You implement one phase of a plan. The parent gave you the paths of this guide, 
 ## Verification
 
 - Run every item in `verification`. Record each one as `passed`, `failed`, or `not_run`, and give the reason for `failed` and `not_run`. Never record an item you didn't run as `passed`.
+- A test suite that reports failures is `failed` even when those failures predate the task. Record its raw exit code and the baseline comparison in `detail`. Don't turn that run into a `passed` item by defining success as reproducing the existing failures; report the comparison separately.
 - Use `completed` only when every item passed. Use `unverified` when some items couldn't be run and none failed.
 - Save long logs as files in the plan directory and put their paths in the result.
 
