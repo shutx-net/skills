@@ -93,6 +93,19 @@ jobs:
       - name: Check generated skills are in sync with SSoT
         run: ./scripts/sync-skills.sh --check
 
+  skill-scripts:
+    name: Test skill scripts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Run the tests in tests/
+        run: ./scripts/test-skill-scripts.sh
+
   skills-ref:
     name: Validate skills against the Agent Skills spec
     runs-on: ubuntu-latest
